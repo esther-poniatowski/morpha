@@ -1,0 +1,49 @@
+// =================================================================================================
+// VS Code Extension Recommendations for Morpha
+// =================================================================================================
+{
+  "recommendations": [
+    // --- Editor Enhancements ---------------------------------------------------------------------
+    "wayou.vscode-todo-highlight",
+    "tamasfe.even-better-toml",
+
+    // --- Spell Checking --------------------------------------------------------------------------
+    "streetsidesoftware.code-spell-checker",
+
+    // --- Core Language Support -------------------------------------------------------------------
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+
+    // --- Debugging -------------------------------------------------------------------------------
+    "ms-python.debugpy",
+
+    // --- Testing ---------------------------------------------------------------------------------
+    "ms-vscode.test-adapter-converter",
+    "hbenl.vscode-test-explorer",
+
+    // --- Formatting ------------------------------------------------------------------------------
+    "ms-python.black-formatter",
+    "stkb.rewrap",
+
+    // --- Linting ---------------------------------------------------------------------------------
+    "ms-python.pylint",
+
+    // --- Static Type Checking --------------------------------------------------------------------
+    "ms-python.mypy-type-checker",
+
+    // --- Documentation ---------------------------------------------------------------------------
+    "executablebookproject.myst-highlight",
+    "davidanson.vscode-markdownlint",
+    "swyddfa.esbonio",
+
+    // --- Version Control -------------------------------------------------------------------------
+    "mhutchie.git-graph",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+
+    // --- Adaptive Language Assistance ------------------------------------------------------------
+    "github.copilot",
+    "github.copilot-chat",
+
+  ]
+}
