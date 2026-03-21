@@ -1,0 +1,23 @@
+# gitignore file for morpha
+# -------------------------
+
+# Temporary files
+*.tmp
+*.temp
+
+# MacOS
+.DS_Store
+
+# Python Cache
+__pycache__
+*.py[cod]
+.pytest_cache
+.mypy_cache
+
+# Build artifacts
+*.egg-info
+dist/
+build/
+
+# Documentation build
+docs/_build/
