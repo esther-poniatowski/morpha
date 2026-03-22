@@ -22,7 +22,18 @@ Example
 >>> data = MyData(np.zeros((10, 5)), dims=Dimensions("time", "units"))
 """
 
-__version__ = "0.0.0"
+from importlib.metadata import version, PackageNotFoundError
+import platform
+
+try:
+    if __package__ is None:
+        raise PackageNotFoundError
+    __version__ = version(__package__)
+except PackageNotFoundError:
+    __version__ = "0.0.0+unknown"
+
+def info() -> str:
+    return f"{__package__} {__version__} | Platform: {platform.system()} Python {platform.python_version()}"
 
 # Core components
 from morpha.components.base import DataComponent
