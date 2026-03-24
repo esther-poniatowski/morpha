@@ -128,8 +128,8 @@ class TestContainer:
         with pytest.raises(TypeError, match="empty"):
             Container.find_types({})
 
-    def test_method_proxy(self):
-        """Test method proxying to values."""
+    def test_apply_method_broadcast(self):
+        """Test broadcasting a method call to values via apply()."""
 
         class MyValue:
             def __init__(self, x):
@@ -141,12 +141,6 @@ class TestContainer:
         container = Container(
             {1: MyValue(10), 2: MyValue(20)}, key_type=int, value_type=MyValue
         )
-        result = container.double()
+        result = container.apply(lambda v: v.double())
         assert result[1] == 20
         assert result[2] == 40
-
-    def test_method_proxy_invalid_method_raises(self):
-        """Test that proxying invalid method raises error."""
-        container = Container({1: "a"}, key_type=int, value_type=str)
-        with pytest.raises(AttributeError):
-            container.nonexistent_method()

@@ -9,7 +9,7 @@ DataStructure
 
 from abc import ABC
 import copy
-from typing import Tuple, Mapping, Self, Set, TypeVar, Generic, Generator, Any, TYPE_CHECKING
+from typing import Optional, Tuple, Mapping, Self, Set, TypeVar, Generic, Generator, Any, TYPE_CHECKING
 
 from morpha.components.dimensions import Dimensions, DimensionsSpec
 from morpha.components.base import DataComponent
@@ -17,6 +17,7 @@ from morpha.components.specs import ComponentSpec
 from morpha.components.metadata import MetaDataField
 
 if TYPE_CHECKING:
+    import numpy as np
     from morpha.coordinates.base import Coordinate
 
 AnyCoreData = TypeVar("AnyCoreData", bound=DataComponent)
@@ -107,7 +108,7 @@ class DataStructure(ABC, Generic[AnyCoreData]):
         """
         self.dims: Dimensions = Dimensions()
         self.coords: Set[str] = set()
-        self.data: AnyCoreData  # type declaration for lazy initialization
+        self._data: Optional[AnyCoreData] = None
 
         if data is not None:
             self.set_data(data)
@@ -116,7 +117,7 @@ class DataStructure(ABC, Generic[AnyCoreData]):
                 self.set_coord(name, coord)
 
     def __repr__(self) -> str:
-        data_status = "empty" if not hasattr(self, "data") else "filled"
+        data_status = "empty" if self._data is None else "filled"
         active_coords = ", ".join(self.coords) if self.coords else "none"
         return (
             f"<{self.__class__.__name__}> Dims: {self.dims}, "
@@ -126,8 +127,30 @@ class DataStructure(ABC, Generic[AnyCoreData]):
     # --- Getter Methods ---------------------------------------------------------------------------
 
     def has_data(self) -> bool:
-        """Check if data is set."""
-        return hasattr(self, "data")
+        """Check if data has been set."""
+        return self._data is not None
+
+    @property
+    def data(self) -> AnyCoreData:
+        """
+        Core data component.
+
+        Returns
+        -------
+        AnyCoreData
+            The core data.
+
+        Raises
+        ------
+        RuntimeError
+            If data has not been set yet.
+        """
+        if self._data is None:
+            raise RuntimeError(
+                f"Data not initialised in {self.__class__.__name__}. "
+                f"Call set_data() or pass data to the constructor."
+            )
+        return self._data
 
     def get_data(self) -> AnyCoreData:
         """
@@ -140,11 +163,9 @@ class DataStructure(ABC, Generic[AnyCoreData]):
 
         Raises
         ------
-        AttributeError
+        RuntimeError
             If data is not set.
         """
-        if not self.has_data():
-            raise AttributeError(f"Data not set in {self.__class__.__name__} instance.")
         return self.data
 
     def get_coord(self, name: str) -> "Coordinate":
@@ -208,29 +229,20 @@ class DataStructure(ABC, Generic[AnyCoreData]):
         """Names of identifier attributes."""
         return set(self.IDENTIFIERS.keys()) if hasattr(self, "IDENTIFIERS") else set()
 
-    def __getattr__(self, name: str) -> Any:
-        """
-        Delegate attribute access to nested objects.
+    @property
+    def ndim(self) -> int:
+        """Number of dimensions of the core data."""
+        return self.data.ndim
 
-        Searches data, dims, coords, and identifiers for the attribute.
-        """
-        # Avoid recursion during initialization and special methods
-        if name.startswith("_") or name in ("coords", "dims", "data", "IDENTIFIERS"):
-            raise AttributeError(f"'{self.__class__.__name__}' has no attribute '{name}'")
+    @property
+    def dtype(self) -> "np.dtype[Any]":
+        """Data type of the core data."""
+        return self.data.dtype
 
-        nested_attr = (
-            getattr(self, "coords", set())
-            | {"data", "dims"}
-            | getattr(self, "identifiers", set())
-        )
-        for attr in nested_attr:
-            obj = object.__getattribute__(self, attr) if hasattr(self, attr) else None
-            if obj is not None and hasattr(obj, name):
-                return getattr(obj, name)
-        raise AttributeError(
-            f"Invalid attribute '{name}' for '{self.__class__.__name__}'. "
-            f"Not in any nested object: {nested_attr}"
-        )
+    @property
+    def size(self) -> int:
+        """Total number of elements in the core data."""
+        return self.data.size
 
     # --- Setter Methods ---------------------------------------------------------------------------
 
@@ -253,7 +265,7 @@ class DataStructure(ABC, Generic[AnyCoreData]):
         self.COMPONENTS_SPEC.validate("data", data)
         self.DIMENSIONS_SPEC.validate(data.dims)
         self.validate_shape(data)
-        self.data = data
+        self._data = data
         self.register_dimensions(data.dims)
 
     def set_coord(self, name: str, coord: "Coordinate") -> None:

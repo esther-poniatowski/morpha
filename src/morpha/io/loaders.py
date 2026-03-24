@@ -20,7 +20,7 @@ import pickle
 
 import numpy as np
 
-from morpha.io.base import IOHandler, FileExt
+from morpha.io.base import IOHandler
 import logging
 
 logger = logging.getLogger(__name__)
@@ -32,8 +32,8 @@ class Loader(IOHandler):
 
     Class Attributes
     ----------------
-    EXT : FileExt
-        File extension for this format.
+    EXT : frozenset[str]
+        Acceptable file extensions for this format (including aliases).
 
     Attributes
     ----------
@@ -109,7 +109,7 @@ class LoaderPKL(Loader):
     pickle.load : Underlying deserialization function.
     """
 
-    EXT = FileExt("pkl")
+    EXT = frozenset({".pkl"})
 
     def _load(self) -> Any:
         with self.path.open("rb") as file:
@@ -125,7 +125,7 @@ class LoaderNPY(Loader):
     numpy.load : Underlying load function.
     """
 
-    EXT = FileExt("npy")
+    EXT = frozenset({".npy"})
 
     def _load(self) -> np.ndarray:
         return np.load(self.path)
@@ -142,7 +142,7 @@ class LoaderNPZ(Loader):
     numpy.load : Underlying load function.
     """
 
-    EXT = FileExt("npz")
+    EXT = frozenset({".npz"})
 
     def _load(self) -> Dict[str, np.ndarray]:
         npz = np.load(self.path)
@@ -158,7 +158,7 @@ class LoaderJSON(Loader):
     json.load : Underlying deserialization function.
     """
 
-    EXT = FileExt("json")
+    EXT = frozenset({".json"})
 
     def _load(self) -> Any:
         import json
@@ -176,7 +176,7 @@ class LoaderYAML(Loader):
     yaml.safe_load : Underlying deserialization function.
     """
 
-    EXT = FileExt("yaml")
+    EXT = frozenset({".yaml", ".yml"})
 
     def _load(self) -> Any:
         import yaml
@@ -184,23 +184,13 @@ class LoaderYAML(Loader):
         with self.path.open("r", encoding="utf-8") as file:
             return yaml.safe_load(file)
 
-    def __init__(self, path: Union[str, Path]) -> None:
-        if isinstance(path, str):
-            path = Path(path)
-        if path.suffix in {".yml", ".yaml"}:
-            self.path = path
-        else:
-            self.path = self.enforce_ext(path, self.EXT)
-        if not self.path.exists():
-            raise FileNotFoundError(f"File does not exist: {self.path}")
-
 
 class LoaderHDF5(Loader):
     """
     Load data from HDF5 files.
     """
 
-    EXT = FileExt("hdf5")
+    EXT = frozenset({".hdf5", ".h5"})
 
     def _load(self) -> Any:
         try:
@@ -214,13 +204,3 @@ class LoaderHDF5(Loader):
                     data[name] = obj[()]
             file.visititems(_visit)
             return data
-
-    def __init__(self, path: Union[str, Path]) -> None:
-        if isinstance(path, str):
-            path = Path(path)
-        if path.suffix in {".h5", ".hdf5"}:
-            self.path = path
-        else:
-            self.path = self.enforce_ext(path, self.EXT)
-        if not self.path.exists():
-            raise FileNotFoundError(f"File does not exist: {self.path}")

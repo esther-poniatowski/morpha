@@ -114,33 +114,6 @@ class Attribute(Generic[BaseT]):
         """Get all labels."""
         return cls.LABELS
 
-    def __getattr__(self, name: str) -> Any:
-        """
-        Allow accessing options as class attributes.
-
-        Enables syntax like `Task.PTD` to create an instance with that value.
-
-        Parameters
-        ----------
-        name : str
-            Attribute name (potential option value).
-
-        Returns
-        -------
-        Self
-            Instance with the specified value.
-
-        Raises
-        ------
-        AttributeError
-            If name is not a valid option.
-        """
-        if name in self.OPTIONS:
-            return self.__class__(name)  # type: ignore[call-arg]
-        if hasattr(super(), "__getattr__"):
-            return super().__getattr__(name)  # type: ignore[misc]
-        raise AttributeError(f"Invalid attribute for {self.__class__.__name__}: {name}")
-
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}>({super().__repr__()})"
 

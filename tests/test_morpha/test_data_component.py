@@ -180,14 +180,13 @@ class TestDataComponent:
         assert data.unit == "s"
 
     def test_metadata_default_values(self):
-        """Test metadata default values."""
+        """Test metadata default values are applied from MetaDataField."""
         values = np.zeros(10)
         dims = Dimensions("time")
         data = DataWithMetadata(values, dims=dims)
 
-        assert data.origin is None
-        # Note: default_value in MetaDataField is not automatically applied
-        # It's available for reference, but __new__ sets None if not provided
+        assert data.origin is None  # default_value is None
+        assert data.unit == "ms"  # default_value from MetaDataField
 
     def test_dims_preserved_on_same_ndim_operation(self):
         """Test dimensions preserved when ndim unchanged."""

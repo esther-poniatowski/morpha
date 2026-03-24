@@ -20,7 +20,7 @@ import pickle
 
 import numpy as np
 
-from morpha.io.base import IOHandler, FileExt
+from morpha.io.base import IOHandler
 import logging
 
 logger = logging.getLogger(__name__)
@@ -35,8 +35,8 @@ class Saver(IOHandler):
 
     Class Attributes
     ----------------
-    EXT : FileExt
-        File extension for this format.
+    EXT : frozenset[str]
+        Acceptable file extensions for this format (including aliases).
 
     Attributes
     ----------
@@ -113,7 +113,7 @@ class SaverPKL(Saver):
     pickle.dump : Underlying serialization function.
     """
 
-    EXT = FileExt("pkl")
+    EXT = frozenset({".pkl"})
 
     def _save(self, data: Any) -> None:
         with self.path.open("wb") as file:
@@ -131,7 +131,7 @@ class SaverNPY(Saver):
     numpy.save : Underlying save function.
     """
 
-    EXT = FileExt("npy")
+    EXT = frozenset({".npy"})
 
     def _save(self, data: np.ndarray) -> None:
         np.save(self.path, data)
@@ -153,7 +153,7 @@ class SaverNPZ(Saver):
     numpy.savez_compressed : Underlying save function.
     """
 
-    EXT = FileExt("npz")
+    EXT = frozenset({".npz"})
 
     def _save(self, data: Union[np.ndarray, Dict[str, np.ndarray]]) -> None:
         if isinstance(data, dict):
@@ -173,7 +173,7 @@ class SaverJSON(Saver):
     json.dump : Underlying serialization function.
     """
 
-    EXT = FileExt("json")
+    EXT = frozenset({".json"})
 
     def _save(self, data: Any) -> None:
         import json
@@ -193,7 +193,7 @@ class SaverYAML(Saver):
     yaml.safe_dump : Underlying serialization function.
     """
 
-    EXT = FileExt("yaml")
+    EXT = frozenset({".yaml", ".yml"})
 
     def _save(self, data: Any) -> None:
         import yaml
@@ -201,23 +201,13 @@ class SaverYAML(Saver):
         with self.path.open("w", encoding="utf-8") as file:
             yaml.safe_dump(data, file, default_flow_style=False)
 
-    def __init__(self, path: Union[str, Path]) -> None:
-        if isinstance(path, str):
-            path = Path(path)
-        if path.suffix in {".yml", ".yaml"}:
-            self.path = path
-        else:
-            self.path = self.enforce_ext(path, self.EXT)
-        if not self.path.parent.exists():
-            raise FileNotFoundError(f"Directory does not exist: {self.path.parent}")
-
 
 class SaverHDF5(Saver):
     """
     Save data to HDF5 files.
     """
 
-    EXT = FileExt("hdf5")
+    EXT = frozenset({".hdf5", ".h5"})
 
     def _save(self, data: Any) -> None:
         try:
@@ -230,13 +220,3 @@ class SaverHDF5(Saver):
                     file.create_dataset(key, data=value)
             else:
                 file.create_dataset("data", data=data)
-
-    def __init__(self, path: Union[str, Path]) -> None:
-        if isinstance(path, str):
-            path = Path(path)
-        if path.suffix in {".h5", ".hdf5"}:
-            self.path = path
-        else:
-            self.path = self.enforce_ext(path, self.EXT)
-        if not self.path.parent.exists():
-            raise FileNotFoundError(f"Directory does not exist: {self.path.parent}")

@@ -245,40 +245,6 @@ class Container(UserDict[K, V], Generic[K, V]):
         _, result_type = self.find_types(result_data)
         return Container(result_data, key_type=self.key_type, value_type=result_type)
 
-    def __getattr__(self, method_name: str) -> Callable[..., "Container[K, Any]"]:
-        """
-        Proxy method calls to values.
-
-        Allows calling methods on all values via container.method_name(*args).
-
-        Parameters
-        ----------
-        method_name : str
-            Method to call on each value.
-
-        Returns
-        -------
-        Callable
-            Function that applies the method to all values.
-
-        Raises
-        ------
-        AttributeError
-            If method doesn't exist on value type.
-        """
-        if not hasattr(self.value_type, method_name):
-            raise AttributeError(f"'{self.value_type.__name__}' has no attribute '{method_name}'")
-
-        def method_proxy(*args: Any, **kwargs: Any) -> "Container[K, Any]":
-            result_data = {
-                key: getattr(value, method_name)(*args, **kwargs)
-                for key, value in self.data.items()
-            }
-            _, result_type = self.find_types(result_data)
-            return Container(result_data, key_type=self.key_type, value_type=result_type)
-
-        return method_proxy
-
     @staticmethod
     def find_types(data: Dict[Q, R]) -> Tuple[Type[Q], Type[R]]:
         """

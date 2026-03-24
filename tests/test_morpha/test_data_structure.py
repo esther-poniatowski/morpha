@@ -221,7 +221,7 @@ class TestDataStructureOperations:
     def test_get_data_when_not_set_raises(self, structure_class):
         """Test that get_data raises when data not set."""
         s = structure_class()
-        with pytest.raises(AttributeError, match="Data not set"):
+        with pytest.raises(RuntimeError, match="Data not initialised"):
             s.get_data()
 
     def test_get_coord_when_not_active_raises(self, structure_class, sample_data):

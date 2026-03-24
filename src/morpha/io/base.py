@@ -67,12 +67,13 @@ class IOHandler(ABC):
 
     Provides common functionality for Saver and Loader classes:
     - Path handling with extension enforcement
-    - Consistent interface for file operations
+    - Multi-extension format support via frozenset-valued EXT
 
     Class Attributes
     ----------------
-    EXT : FileExt
-        File extension for this handler.
+    EXT : frozenset[str]
+        Acceptable file extensions for this handler (including aliases).
+        The first element (by sort order) is used as the canonical default.
 
     Attributes
     ----------
@@ -89,7 +90,7 @@ class IOHandler(ABC):
     Subclass to create specific handlers:
 
     >>> class MyHandler(IOHandler):
-    ...     EXT = FileExt("pkl")
+    ...     EXT = frozenset({".pkl"})
     ...     def process(self, data): ...
 
     >>> handler = MyHandler("data/file")
@@ -102,12 +103,19 @@ class IOHandler(ABC):
     Loader : For loading data from files.
     """
 
-    EXT: FileExt
+    EXT: frozenset[str]
 
     def __init__(self, path: Union[str, Path]) -> None:
         if isinstance(path, str):
             path = Path(path)
-        self.path = self.enforce_ext(path, self.EXT)
+        if path.suffix in self.EXT:
+            self.path = path
+        else:
+            self.path = path.with_suffix(self._canonical_ext())
+
+    def _canonical_ext(self) -> str:
+        """Return the canonical (sorted-first) extension from EXT."""
+        return sorted(self.EXT)[0]
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}> Path: {self.path}"

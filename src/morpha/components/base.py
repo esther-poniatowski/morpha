@@ -146,10 +146,16 @@ class DataComponent(np.ndarray):
 
         obj.dims = dims
 
-        # Set metadata
+        # Set metadata with type validation and default values
         if hasattr(cls, "METADATA"):
-            for attr in cls.METADATA:
-                setattr(obj, attr, metadata.get(attr, None))
+            for attr, field in cls.METADATA.items():
+                value = metadata.get(attr, field.default_value)
+                if value is not None and not isinstance(value, field.field_type):
+                    raise TypeError(
+                        f"Metadata '{attr}' expects type {field.field_type.__name__}, "
+                        f"got {type(value).__name__}"
+                    )
+                setattr(obj, attr, value)
         else:
             for attr, value in metadata.items():
                 setattr(obj, attr, value)
