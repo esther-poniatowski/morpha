@@ -1,7 +1,7 @@
 # Morpha Documentation
 
 **Morpha** is a domain-agnostic data representation library for scientific computing.
-It provides reusable patterns for structured arrays, typed containers, and I/O operations.
+Morpha provides reusable patterns for structured arrays, typed containers, and I/O operations.
 
 ```{toctree}
 :maxdepth: 2

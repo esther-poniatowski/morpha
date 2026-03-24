@@ -10,7 +10,7 @@ Domain-agnostic data representation patterns for scientific computing.
 
 ## Overview
 
-Morpha provides foundational abstractions for building structured data representations in Python. It extracts and generalizes patterns from domain-specific data analysis projects into reusable components.
+Morpha provides foundational abstractions for building structured data representations in Python. Morpha extracts and generalizes patterns from data analysis projects across specific domains into reusable components.
 
 ## Features
 
