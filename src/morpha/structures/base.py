@@ -94,7 +94,7 @@ class DataStructure(ABC, Generic[AnyCoreData]):
         """Ensure subclasses define required class attributes."""
         super().__init_subclass__(**kwargs)
         for class_attr in cls.REQUIRED_IN_SUBCLASSES:
-            if not hasattr(cls, class_attr):
+            if class_attr not in cls.__dict__:
                 raise TypeError(f"<{cls.__name__}> Missing class-level attribute: '{class_attr}'.")
 
     def __init__(
@@ -356,5 +356,7 @@ class DataStructure(ABC, Generic[AnyCoreData]):
         ----
         Not yet implemented.
         """
-        # TODO: Implement selection logic
-        return self
+        raise NotImplementedError(
+            f"{self.__class__.__name__}.sel() is not implemented yet; "
+            "selection is not available on this data structure."
+        )

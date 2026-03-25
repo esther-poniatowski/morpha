@@ -7,6 +7,7 @@ ComponentSpec
     Specification of allowed data components in a data structure.
 """
 
+from types import MappingProxyType
 from typing import Dict, Type, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -47,7 +48,12 @@ class ComponentSpec:
     def __init__(self, **kwargs: Type["DataComponent"]) -> None:
         if len(set(kwargs.keys())) != len(kwargs):
             raise ValueError("Duplicate component names in the specification.")
-        self.spec: Dict[str, Type["DataComponent"]] = kwargs
+        self._spec: Dict[str, Type["DataComponent"]] = dict(kwargs)
+
+    @property
+    def spec(self):
+        """Read-only mapping of attribute names to expected component types."""
+        return MappingProxyType(self._spec)
 
     def validate(self, name: str, component: "DataComponent") -> None:
         """
@@ -67,29 +73,29 @@ class ComponentSpec:
         TypeError
             If the component type does not match the expected type.
         """
-        if name not in self.spec:
-            raise AttributeError(f"Invalid component name: '{name}' not in {self.spec.keys()}.")
-        if not isinstance(component, self.spec[name]):
+        if name not in self._spec:
+            raise AttributeError(f"Invalid component name: '{name}' not in {self._spec.keys()}.")
+        if not isinstance(component, self._spec[name]):
             raise TypeError(
-                f"Invalid component type for '{name}': {type(component)} != {self.spec[name]}"
+                f"Invalid component type for '{name}': {type(component)} != {self._spec[name]}"
             )
 
     def __contains__(self, name: str) -> bool:
         """Check if a name is in the specification."""
-        return name in self.spec
+        return name in self._spec
 
     def __iter__(self):
         """Iterate over component names."""
-        return iter(self.spec)
+        return iter(self._spec)
 
     def keys(self):
         """Return component names."""
-        return self.spec.keys()
+        return self._spec.keys()
 
     def values(self):
         """Return expected component types."""
-        return self.spec.values()
+        return self._spec.values()
 
     def items(self):
         """Return (name, type) pairs."""
-        return self.spec.items()
+        return self._spec.items()

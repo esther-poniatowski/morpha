@@ -89,6 +89,7 @@ class TestAttribute:
         result = Task.from_container(values, container=list)
         assert result == ["PTD", "CLK", "PTD"]
         assert isinstance(result, list)
+        assert all(isinstance(item, Task) for item in result)
 
     def test_from_container_set(self):
         """Test from_container returning set."""

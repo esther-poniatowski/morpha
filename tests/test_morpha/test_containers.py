@@ -4,6 +4,10 @@ import pytest
 from morpha.structures.containers import Container
 
 
+class IntContainer(Container[int, int]):
+    """Typed container subclass used to verify receiver-preserving transforms."""
+
+
 class TestContainer:
     """Tests for the Container class."""
 
@@ -144,3 +148,20 @@ class TestContainer:
         result = container.apply(lambda v: v.double())
         assert result[1] == 20
         assert result[2] == 40
+
+    def test_fill_uses_validated_boundary(self):
+        """Test fill validates generated values through __setitem__."""
+        container = Container({1: "", 2: ""}, key_type=int, value_type=str)
+
+        with pytest.raises(TypeError, match="Invalid value type"):
+            container.fill(lambda _: 123)
+
+    def test_apply_preserves_container_subclass(self):
+        """Test apply preserves receiver type for subclassed containers."""
+        container = IntContainer({1: 2, 2: 4}, key_type=int, value_type=int)
+
+        result = container.apply(lambda value: value * 2)
+
+        assert isinstance(result, IntContainer)
+        assert result[1] == 4
+        assert result[2] == 8

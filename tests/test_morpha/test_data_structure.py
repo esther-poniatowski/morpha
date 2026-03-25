@@ -155,6 +155,18 @@ class TestDataStructureSubclassing:
         assert instance.dims == Dimensions()
         assert instance.coords == set()
 
+    def test_subclass_must_own_its_schema(self):
+        """Test inherited schema objects do not satisfy subclass requirements."""
+        class ParentStructure(DataStructure[CoreData]):
+            DIMENSIONS_SPEC = DimensionsSpec(units=True, time=True)
+            COMPONENTS_SPEC = ComponentSpec(data=CoreData, time=CoordTime)
+            IDENTIFIERS = {"session": MetaDataField(str, None)}
+
+        with pytest.raises(TypeError, match="Missing class-level attribute"):
+
+            class ChildStructure(ParentStructure):
+                pass
+
 
 @pytest.mark.integration
 class TestDataStructureOperations:
@@ -286,3 +298,10 @@ class TestDataStructureOperations:
         coords = dict(s.iter_coords())
         assert "time" in coords
         assert np.array_equal(coords["time"], sample_time_coord)
+
+    def test_sel_raises_until_implemented(self, structure_class, sample_data):
+        """Test selection fails loudly until a real implementation exists."""
+        s = structure_class(data=sample_data)
+
+        with pytest.raises(NotImplementedError, match="not implemented"):
+            s.sel(time=slice(0, 1))

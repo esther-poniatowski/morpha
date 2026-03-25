@@ -10,6 +10,7 @@ DimensionsSpec
 """
 
 from collections import UserList, OrderedDict
+from types import MappingProxyType
 from typing import Self, Tuple
 
 
@@ -280,15 +281,20 @@ class DimensionsSpec:
     def __init__(self, **kwargs: bool) -> None:
         if len(set(kwargs.keys())) != len(kwargs):
             raise ValueError("Duplicate dimension names in the specification.")
-        self.spec: OrderedDict[str, bool] = OrderedDict(kwargs)
+        self._spec: OrderedDict[str, bool] = OrderedDict(kwargs)
+
+    @property
+    def spec(self):
+        """Read-only ordered mapping of dimension names to required status."""
+        return MappingProxyType(self._spec)
 
     def required(self) -> Dimensions:
         """Get required dimensions."""
-        return Dimensions(*[dim for dim, req in self.spec.items() if req])
+        return Dimensions(*[dim for dim, req in self._spec.items() if req])
 
     def optional(self) -> Dimensions:
         """Get optional dimensions."""
-        return Dimensions(*[dim for dim, req in self.spec.items() if not req])
+        return Dimensions(*[dim for dim, req in self._spec.items() if not req])
 
     def validate(self, dims: Dimensions) -> None:
         """
@@ -306,10 +312,10 @@ class DimensionsSpec:
             or dimensions are in incorrect order.
         """
         dims_set = set(dims)
-        spec_set = set(self.spec.keys())
+        spec_set = set(self._spec.keys())
 
         # Check for missing required and extra dimensions
-        missing = [dim for dim, req in self.spec.items() if req and dim not in dims_set]
+        missing = [dim for dim, req in self._spec.items() if req and dim not in dims_set]
         extra = [dim for dim in dims_set if dim not in spec_set]
 
         if missing:
@@ -318,7 +324,7 @@ class DimensionsSpec:
             raise ValueError(f"Extra dimensions not allowed: {extra}")
 
         # Check order
-        spec_order = [dim for dim in self.spec.keys() if dim in dims]
+        spec_order = [dim for dim in self._spec.keys() if dim in dims]
         actual_order = list(dims)
         if spec_order != actual_order:
             raise ValueError(f"Incorrect order: {actual_order} instead of {spec_order}.")

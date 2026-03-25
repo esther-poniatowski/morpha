@@ -223,7 +223,7 @@ class Container(UserDict[K, V], Generic[K, V]):
             Additional arguments for func.
         """
         for key in self.data.keys():
-            self.data[key] = func(key, **kwargs)
+            self[key] = func(key, **kwargs)
 
     def apply(self, func: Callable[[V], R], **kwargs: Any) -> "Container[K, R]":
         """
@@ -243,7 +243,7 @@ class Container(UserDict[K, V], Generic[K, V]):
         """
         result_data = {k: func(v, **kwargs) for k, v in self.data.items()}
         _, result_type = self.find_types(result_data)
-        return Container(result_data, key_type=self.key_type, value_type=result_type)
+        return self.__class__(result_data, key_type=self.key_type, value_type=result_type)
 
     @staticmethod
     def find_types(data: Dict[Q, R]) -> Tuple[Type[Q], Type[R]]:

@@ -122,7 +122,7 @@ class Attribute(Generic[BaseT]):
         cls,
         values: Iterable[BaseT],
         container: Type[Union[List[Any], Tuple[Any, ...], Set[Any]]] = list,
-    ) -> Union[List[BaseT], Tuple[BaseT, ...], Set[BaseT]]:
+    ) -> Union[List["Attribute[BaseT]"], Tuple["Attribute[BaseT]", ...], Set["Attribute[BaseT]"]]:
         """
         Create multiple attribute instances from an iterable.
 
@@ -143,10 +143,9 @@ class Attribute(Generic[BaseT]):
         ValueError
             If any value is invalid.
         """
-        instances: List[BaseT] = []
+        instances: List[Attribute[BaseT]] = []
         for value in values:
             if not cls.is_valid(value):
                 raise ValueError(f"Invalid value for {cls.__name__}: {value}")
-            instance = cls.__bases__[0](value)  # Create using first base type
-            instances.append(cast(BaseT, instance))
+            instances.append(cast(Attribute[BaseT], cls(value)))
         return container(instances)
