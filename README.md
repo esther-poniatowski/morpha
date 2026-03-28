@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/python-%3E%3D3.12-blue)](https://www.python.org/)
 [![License: GPL](https://img.shields.io/badge/License-GPL-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
 
-Domain-agnostic data representation patterns for scientific computing.
+Provides reusable data structures for scientific computing in Python.
 
 ## Overview
 
