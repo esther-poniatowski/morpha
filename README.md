@@ -1,82 +1,94 @@
 # Morpha
 
-[![Conda](https://img.shields.io/badge/conda-eresthanaconda--channel-blue)](#installation)
+[![Conda](https://img.shields.io/badge/conda-eresthanaconda--channel-blue)](docs/guide/installation.md)
 [![Maintenance](https://img.shields.io/maintenance/yes/2026)]()
 [![Last Commit](https://img.shields.io/github/last-commit/esther-poniatowski/morpha)](https://github.com/esther-poniatowski/morpha/commits/main)
-[![Python](https://img.shields.io/badge/python-%3E%3D3.12-blue)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-%E2%89%A53.12-blue)](https://www.python.org/)
 [![License: GPL](https://img.shields.io/badge/License-GPL-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
 
 Provides reusable data structures for scientific computing in Python.
 
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Overview
 
-Morpha provides foundational abstractions for building structured data representations in Python. Morpha extracts and generalizes patterns from data analysis projects across specific domains into reusable components.
+### Motivation
+
+Data analysis projects across scientific domains repeatedly implement the same
+structural patterns: arrays with named dimensions, composite data containers with
+schema enforcement, labeled coordinate axes, and serialization to multiple file
+formats. Without shared abstractions, each project re-invents these patterns with
+inconsistent interfaces.
+
+### Advantages
+
+Morpha extracts and generalizes these recurring patterns into a reusable library:
+
+- **Dimension-aware arrays** — NumPy array subclasses that carry dimension names and
+  propagate them through operations.
+- **Structured containers** — abstract base classes for composite data with schema
+  enforcement.
+- **Creational patterns** — Factory and Builder abstractions for constructing data
+  objects consistently.
+- **Multi-format I/O** — Saver/Loader patterns for PKL, NPY, NPZ, JSON, YAML, and
+  HDF5 formats.
+
+---
 
 ## Features
 
-- **DataComponent**: NumPy array subclasses with dimension annotations and metadata propagation
-- **DataStructure**: Abstract base classes for composite data structures with schema enforcement
-- **Coordinates**: Labeled axes with attribute validation
-- **Creational Patterns**: Factory and Builder patterns for constructing data objects
-- **I/O**: Saver/Loader patterns for multiple file formats (PKL, NPY, NPZ, JSON, YAML)
+- [x] **DataComponent**: NumPy array subclasses with dimension annotations and
+  metadata propagation.
+- [x] **DataStructure**: Abstract base classes for composite data structures with
+  schema enforcement.
+- [x] **Coordinates**: Labeled axes with attribute validation.
+- [x] **Creational Patterns**: Factory and Builder abstractions for object creation.
+- [x] **I/O**: Saver/Loader patterns for multiple file formats.
 
-## Installation
-
-```bash
-pip install -e .
-```
-
-For development:
-
-```bash
-pip install -e ".[dev]"
-```
+---
 
 ## Quick Start
 
 ```python
 import numpy as np
-from morpha import DataComponent, Dimensions, DimensionsSpec
+from morpha import DataComponent, Dimensions
 
-# Define a custom data component
-class NeuralData(DataComponent):
-    DIMENSIONS_SPEC = DimensionsSpec(time=True, units=False)
-    DTYPE = np.float64
-    SENTINEL = np.nan
-
-# Create an instance with dimension labels
-data = NeuralData(np.random.randn(100, 50), dims=Dimensions("time", "units"))
-
-# Access dimension information
-print(data.get_dim(0))      # 'time'
-print(data.get_axis("units"))  # 1
-print(data.get_size("time"))   # 100
-
-# Dimensions propagate through operations
-transposed = data.T
-print(transposed.dims)  # Dimensions['units', 'time']
+data = DataComponent(np.random.randn(100, 50), dims=Dimensions("time", "units"))
+print(data.get_dim(0))        # 'time'
+print(data.get_axis("units")) # 1
 ```
 
-## CLI
+---
 
-```bash
-# Display package info
-morpha info
+## Documentation
 
-# Display version
-morpha version
-```
+| Guide | Content |
+| ----- | ------- |
+| [Installation](docs/guide/installation.md) | Prerequisites, pip setup |
+| [Usage](docs/guide/usage.md) | DataComponent, DataStructure, coordinates, I/O |
+| [Concepts](docs/guide/concepts.md) | Core abstractions and design |
 
-## Modules
+Full API documentation and rendered guides are also available at
+[esther-poniatowski.github.io/morpha](https://esther-poniatowski.github.io/morpha/).
 
-| Module | Description |
-|--------|-------------|
-| `components` | NumPy array subclasses with dimensions and metadata |
-| `structures` | Abstract base classes for composite data structures |
-| `coordinates` | Labeled axes with attribute validation |
-| `creational` | Factory and Builder patterns |
-| `io` | Saver/Loader for multiple file formats |
+---
+
+## Contributing
+
+Contribution guidelines are described in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
 
 ## License
 
-GPL-3.0-or-later
+This project is licensed under the terms of the
+[GNU General Public License v3.0](LICENSE).
