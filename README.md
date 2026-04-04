@@ -46,13 +46,15 @@ Morpha extracts and generalizes these recurring patterns into a reusable library
 
 ## Features
 
-- [x] **DataComponent**: NumPy array subclasses with dimension annotations and
-  metadata propagation.
-- [x] **DataStructure**: Abstract base classes for composite data structures with
-  schema enforcement.
-- [x] **Coordinates**: Labeled axes with attribute validation.
-- [x] **Creational Patterns**: Factory and Builder abstractions for object creation.
-- [x] **I/O**: Saver/Loader patterns for multiple file formats.
+- [x] **DataComponent**: Subclass NumPy arrays with dimension annotations and metadata
+  propagation through operations.
+- [x] **DataStructure**: Define abstract base classes for composite data with schema
+  enforcement.
+- [x] **Coordinates**: Attach labeled axes with attribute validation.
+- [x] **Creational Patterns**: Construct data objects consistently through Factory and
+  Builder abstractions.
+- [x] **I/O**: Serialize and deserialize data across multiple file formats (PKL, NPY,
+  NPZ, JSON, YAML, HDF5).
 
 ---
 
