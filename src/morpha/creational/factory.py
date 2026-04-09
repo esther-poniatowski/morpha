@@ -29,6 +29,22 @@ class Factory(Generic[Products], ABC):
     PRODUCT_CLASSES : Type[DataComponent] | Tuple[Type[DataComponent], ...]
         Class(es) of products this factory creates.
 
+    Attributes
+    ----------
+    PRODUCT_CLASSES : Type[DataComponent] | Tuple[Type[DataComponent], ...]
+        Class(es) of products this factory creates (set on subclasses).
+
+    Notes
+    -----
+    Factories are useful when:
+    - Creating a component requires complex processing of inputs
+    - Multiple related components must be created together
+    - The creation logic should be reusable and testable
+
+    See Also
+    --------
+    Builder : For step-by-step construction of DataStructures.
+
     Examples
     --------
     Define a concrete factory:
@@ -43,17 +59,6 @@ class Factory(Generic[Products], ABC):
 
     >>> factory = TimeCoordFactory()
     >>> coord = factory.create(np.arange(100), unit="ms")
-
-    Notes
-    -----
-    Factories are useful when:
-    - Creating a component requires complex processing of inputs
-    - Multiple related components must be created together
-    - The creation logic should be reusable and testable
-
-    See Also
-    --------
-    Builder : For step-by-step construction of DataStructures.
     """
 
     PRODUCT_CLASSES: Type[DataComponent] | Tuple[Type[DataComponent], ...]
@@ -65,9 +70,9 @@ class Factory(Generic[Products], ABC):
 
         Parameters
         ----------
-        *args
+        *args : Any
             Inputs required to create the products.
-        **kwargs
+        **kwargs : Any
             Additional options for creation.
 
         Returns

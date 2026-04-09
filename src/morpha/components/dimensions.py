@@ -21,15 +21,20 @@ class Dimensions(UserList[str]):
     Provides utility methods to examine and manipulate dimensions, which can be
     used by wrapper objects via delegation.
 
+    Parameters
+    ----------
+    *args : str
+        Names of the dimensions.
+
     Class Attributes
     ----------------
     DEFAULT : str
         Default dimension name for unlabeled axes.
 
-    Parameters
+    Attributes
     ----------
-    *args : str
-        Names of the dimensions.
+    data : list[str]
+        Underlying list of dimension names (inherited from UserList).
 
     Examples
     --------
@@ -80,14 +85,21 @@ class Dimensions(UserList[str]):
 
         Returns
         -------
-        Dimensions
+        Self
             Dimensions with empty string names.
         """
         return cls(*[cls.DEFAULT for _ in range(ndim)])
 
     @property
     def ndim(self) -> int:
-        """Number of dimensions."""
+        """
+        Return the number of dimensions.
+
+        Returns
+        -------
+        int
+            Number of dimensions.
+        """
         return len(self)
 
     def get_dim(self, axis: int) -> str:
@@ -137,7 +149,19 @@ class Dimensions(UserList[str]):
         return self.index(name)
 
     def is_subset(self, other: Self) -> bool:
-        """Check if dimensions are a subset of another."""
+        """
+        Check if dimensions are a subset of another.
+
+        Parameters
+        ----------
+        other : Dimensions
+            Dimensions to compare against.
+
+        Returns
+        -------
+        bool
+            True if all names are present in *other*.
+        """
         return set(self).issubset(set(other))
 
     def is_ordered_as(self, other: Self) -> bool:
@@ -145,6 +169,16 @@ class Dimensions(UserList[str]):
         Check if common dimensions are in the same order.
 
         Only considers dimensions present in both objects.
+
+        Parameters
+        ----------
+        other : Dimensions
+            Dimensions to compare against.
+
+        Returns
+        -------
+        bool
+            True if common dimensions appear in the same relative order.
         """
         common_dims = set(self) & set(other)
         order_self = [d for d in self if d in common_dims]
@@ -153,7 +187,19 @@ class Dimensions(UserList[str]):
 
     @classmethod
     def intersection(cls, *dims: Self) -> Self:
-        """Get common dimensions between multiple Dimensions objects."""
+        """
+        Get common dimensions between multiple Dimensions objects.
+
+        Parameters
+        ----------
+        *dims : Dimensions
+            Two or more Dimensions objects to intersect.
+
+        Returns
+        -------
+        Dimensions
+            Dimensions present in all inputs.
+        """
         common = set(dims[0])
         for dim in dims[1:]:
             common &= set(dim)
@@ -197,7 +243,7 @@ class Dimensions(UserList[str]):
 
         Returns
         -------
-        Dimensions
+        Self
             Reordered dimensions.
         """
         if axes is None:
@@ -217,7 +263,7 @@ class Dimensions(UserList[str]):
 
         Returns
         -------
-        Dimensions
+        Self
             New instance with swapped dimensions.
         """
         for axis in [axis1, axis2]:
@@ -233,14 +279,14 @@ class Dimensions(UserList[str]):
 
         Parameters
         ----------
-        source : int or list of int
+        source : int | list[int]
             Indices of axes to move.
-        destination : int or list of int
+        destination : int | list[int]
             New positions for the axes.
 
         Returns
         -------
-        Dimensions
+        Self
             New instance with moved dimensions.
         """
         if isinstance(source, int):
@@ -285,15 +331,36 @@ class DimensionsSpec:
 
     @property
     def spec(self):
-        """Read-only ordered mapping of dimension names to required status."""
+        """
+        Return read-only ordered mapping of dimension names to required status.
+
+        Returns
+        -------
+        MappingProxyType
+            Immutable view of the specification.
+        """
         return MappingProxyType(self._spec)
 
     def required(self) -> Dimensions:
-        """Get required dimensions."""
+        """
+        Get required dimensions.
+
+        Returns
+        -------
+        Dimensions
+            Dimensions marked as required.
+        """
         return Dimensions(*[dim for dim, req in self._spec.items() if req])
 
     def optional(self) -> Dimensions:
-        """Get optional dimensions."""
+        """
+        Get optional dimensions.
+
+        Returns
+        -------
+        Dimensions
+            Dimensions marked as optional.
+        """
         return Dimensions(*[dim for dim, req in self._spec.items() if not req])
 
     def validate(self, dims: Dimensions) -> None:

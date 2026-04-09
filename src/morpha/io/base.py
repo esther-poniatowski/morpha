@@ -50,12 +50,36 @@ class FileExt(str):
 
     @classmethod
     def is_valid(cls, ext: str) -> bool:
-        """Check if extension is valid."""
+        """
+        Check if extension is valid.
+
+        Parameters
+        ----------
+        ext : str
+            File extension to check.
+
+        Returns
+        -------
+        bool
+            True if the extension is in OPTIONS.
+        """
         return ext in cls.OPTIONS
 
     @staticmethod
     def add_period(ext: str) -> str:
-        """Add leading period if missing."""
+        """
+        Add leading period if missing.
+
+        Parameters
+        ----------
+        ext : str
+            File extension, with or without leading period.
+
+        Returns
+        -------
+        str
+            Extension with a leading period.
+        """
         if not ext.startswith("."):
             ext = "." + ext
         return ext
@@ -69,6 +93,11 @@ class IOHandler(ABC):
     - Path handling with extension enforcement
     - Multi-extension format support via frozenset-valued EXT
 
+    Parameters
+    ----------
+    path : str or Path
+        Path to the file.
+
     Class Attributes
     ----------------
     EXT : frozenset[str]
@@ -80,10 +109,10 @@ class IOHandler(ABC):
     path : Path
         File path with enforced extension.
 
-    Parameters
-    ----------
-    path : str or Path
-        Path to the file.
+    See Also
+    --------
+    Saver : For saving data to files.
+    Loader : For loading data from files.
 
     Examples
     --------
@@ -96,11 +125,6 @@ class IOHandler(ABC):
     >>> handler = MyHandler("data/file")
     >>> handler.path
     PosixPath('data/file.pkl')
-
-    See Also
-    --------
-    Saver : For saving data to files.
-    Loader : For loading data from files.
     """
 
     EXT: frozenset[str]
@@ -114,7 +138,14 @@ class IOHandler(ABC):
             self.path = path.with_suffix(self._canonical_ext())
 
     def _canonical_ext(self) -> str:
-        """Return the canonical (sorted-first) extension from EXT."""
+        """
+        Return the canonical (sorted-first) extension from EXT.
+
+        Returns
+        -------
+        str
+            First extension in sorted order.
+        """
         return sorted(self.EXT)[0]
 
     def __repr__(self) -> str:

@@ -41,6 +41,19 @@ class Attribute(Generic[BaseT]):
     LABELS : Mapping[BaseT, str]
         Human-readable labels for valid values.
 
+    Attributes
+    ----------
+    OPTIONS : FrozenSet[BaseT]
+        Valid values for this attribute type (set on subclasses).
+    LABELS : Mapping[BaseT, str]
+        Human-readable labels for valid values (set on subclasses).
+
+    Notes
+    -----
+    This mixin doesn't define __new__ or __init__. It's designed to be
+    combined with a built-in type (int, str, float, bool) via multiple
+    inheritance. Subclasses should implement their own constructor.
+
     Examples
     --------
     Define a categorical attribute:
@@ -66,12 +79,6 @@ class Attribute(Generic[BaseT]):
     True
     >>> Task.is_valid("INVALID")
     False
-
-    Notes
-    -----
-    This mixin doesn't define __new__ or __init__. It's designed to be
-    combined with a built-in type (int, str, float, bool) via multiple
-    inheritance. Subclasses should implement their own constructor.
     """
 
     OPTIONS: FrozenSet[BaseT]
@@ -101,17 +108,38 @@ class Attribute(Generic[BaseT]):
 
     @property
     def full_label(self) -> str:
-        """Human-readable label for this value."""
+        """
+        Return human-readable label for this value.
+
+        Returns
+        -------
+        str
+            Label from LABELS, or empty string if not found.
+        """
         return self.LABELS.get(cast(BaseT, self), "")
 
     @classmethod
     def get_options(cls) -> FrozenSet[BaseT]:
-        """Get all valid options."""
+        """
+        Get all valid options.
+
+        Returns
+        -------
+        FrozenSet[BaseT]
+            Set of valid attribute values.
+        """
         return cls.OPTIONS
 
     @classmethod
     def get_labels(cls) -> Mapping[BaseT, str]:
-        """Get all labels."""
+        """
+        Get all labels.
+
+        Returns
+        -------
+        Mapping[BaseT, str]
+            Mapping from values to human-readable labels.
+        """
         return cls.LABELS
 
     def __repr__(self) -> str:
@@ -130,12 +158,12 @@ class Attribute(Generic[BaseT]):
         ----------
         values : Iterable[BaseT]
             Values to convert.
-        container : Type
+        container : Type[Union[List[Any], Tuple[Any, ...], Set[Any]]]
             Container type for results (list, tuple, or set).
 
         Returns
         -------
-        Union[List[BaseT], Tuple[BaseT, ...], Set[BaseT]]
+        Union[List[Attribute[BaseT]], Tuple[Attribute[BaseT], ...], Set[Attribute[BaseT]]]
             Container of attribute instances.
 
         Raises

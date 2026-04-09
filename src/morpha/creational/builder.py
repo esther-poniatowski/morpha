@@ -37,6 +37,21 @@ class Builder(Generic[Product], ABC):
     product : Optional[Product]
         The data structure being constructed.
 
+    Notes
+    -----
+    The Builder pattern separates concerns:
+    - Constructor: Store static configuration
+    - build(): Receive dynamic inputs, orchestrate construction
+    - Helper methods: Process specific aspects of construction
+    - reset(): Clear state for reuse
+
+    After `get_product()` is called, the builder resets and can be
+    reused to build another instance.
+
+    See Also
+    --------
+    Factory : For simpler component creation without step-by-step logic.
+
     Examples
     --------
     Define a concrete builder:
@@ -63,21 +78,6 @@ class Builder(Generic[Product], ABC):
 
     >>> builder = TimeSeriesBuilder()
     >>> ts = builder.build(raw_data, timestamps)
-
-    Notes
-    -----
-    The Builder pattern separates concerns:
-    - Constructor: Store static configuration
-    - build(): Receive dynamic inputs, orchestrate construction
-    - Helper methods: Process specific aspects of construction
-    - reset(): Clear state for reuse
-
-    After `get_product()` is called, the builder resets and can be
-    reused to build another instance.
-
-    See Also
-    --------
-    Factory : For simpler component creation without step-by-step logic.
     """
 
     PRODUCT_CLASS: Type[Product]
@@ -121,9 +121,9 @@ class Builder(Generic[Product], ABC):
 
         Parameters
         ----------
-        *args
+        *args : Any
             Input objects required for building.
-        **kwargs
+        **kwargs : Any
             Additional options for building.
 
         Returns

@@ -25,6 +25,15 @@ class DataComponent(np.ndarray):
     - Metadata fields defined by subclasses
     - Automatic propagation of dimensions and metadata through array operations
 
+    Parameters
+    ----------
+    values : ArrayLike
+        Values for the underlying array.
+    dims : Dimensions, optional
+        Dimension names. If not provided, defaults are used.
+    **metadata : Any
+        Additional metadata attributes.
+
     Class Attributes
     ----------------
     DIMENSIONS_SPEC : DimensionsSpec
@@ -45,14 +54,13 @@ class DataComponent(np.ndarray):
     dims : Dimensions
         Names for each array dimension.
 
-    Parameters
-    ----------
-    values : ArrayLike
-        Values for the underlying array.
-    dims : Dimensions, optional
-        Dimension names. If not provided, defaults are used.
-    **metadata
-        Additional metadata attributes.
+    Notes
+    -----
+    Dimension propagation:
+    - Operations preserving dimensionality: dims transferred from parent
+    - Operations changing dimensionality: dims reset to defaults
+
+    Methods like transpose, swapaxes, moveaxis update dims accordingly.
 
     Examples
     --------
@@ -70,14 +78,6 @@ class DataComponent(np.ndarray):
     1
     >>> data.get_size("units")
     10
-
-    Notes
-    -----
-    Dimension propagation:
-    - Operations preserving dimensionality: dims transferred from parent
-    - Operations changing dimensionality: dims reset to defaults
-
-    Methods like transpose, swapaxes, moveaxis update dims accordingly.
     """
 
     DIMENSIONS_SPEC: DimensionsSpec
@@ -110,12 +110,12 @@ class DataComponent(np.ndarray):
             Values to store.
         dims : Dimensions, optional
             Dimension names.
-        **metadata
+        **metadata : Any
             Additional metadata attributes.
 
         Returns
         -------
-        DataComponent
+        Self
             New instance.
 
         Raises
@@ -163,7 +163,14 @@ class DataComponent(np.ndarray):
         return obj
 
     def __array_finalize__(self, obj: np.ndarray | None) -> None:
-        """Finalize creation by propagating dimensions and metadata."""
+        """
+        Finalize creation by propagating dimensions and metadata.
+
+        Parameters
+        ----------
+        obj : np.ndarray or None
+            Source array from which this instance was created.
+        """
         if obj is None:
             return
         self.propagate_dimensions(obj, self)
@@ -181,7 +188,6 @@ class DataComponent(np.ndarray):
         values : ArrayLike
             Input values to validate.
         """
-        return None
 
     @classmethod
     def propagate_dimensions(cls, parent: np.ndarray, child: Self) -> None:
@@ -194,7 +200,7 @@ class DataComponent(np.ndarray):
         ----------
         parent : np.ndarray
             Source array.
-        child : DataComponent
+        child : Self
             Target array to update.
         """
         if parent.ndim == child.ndim:
@@ -214,7 +220,7 @@ class DataComponent(np.ndarray):
         ----------
         parent : np.ndarray
             Source array.
-        child : DataComponent
+        child : Self
             Target array to update.
         """
         if hasattr(cls, "METADATA"):
@@ -232,7 +238,7 @@ class DataComponent(np.ndarray):
 
         Returns
         -------
-        DataComponent
+        Self
             Array cast to current class.
         """
         if isinstance(obj, np.ndarray):
@@ -252,12 +258,12 @@ class DataComponent(np.ndarray):
             Shape of the array. Integer creates 1D array.
         dims : Dimensions, optional
             Dimension names.
-        **metadata
+        **metadata : Any
             Additional metadata attributes.
 
         Returns
         -------
-        DataComponent
+        Self
             Instance filled with SENTINEL value.
         """
         if isinstance(shape, int):
@@ -268,11 +274,35 @@ class DataComponent(np.ndarray):
     # --- Getter Methods ---------------------------------------------------------------------------
 
     def get_dim(self, axis: int) -> str:
-        """Get dimension name by axis index."""
+        """
+        Get dimension name by axis index.
+
+        Parameters
+        ----------
+        axis : int
+            Axis index.
+
+        Returns
+        -------
+        str
+            Dimension name.
+        """
         return self.dims.get_dim(axis)
 
     def get_axis(self, dim: str) -> int:
-        """Get axis index by dimension name."""
+        """
+        Get axis index by dimension name.
+
+        Parameters
+        ----------
+        dim : str
+            Dimension name.
+
+        Returns
+        -------
+        int
+            Axis index.
+        """
         return self.dims.get_axis(dim)
 
     def get_size(self, dim: str) -> int:
@@ -308,7 +338,19 @@ class DataComponent(np.ndarray):
     # --- Overridden NumPy Methods -----------------------------------------------------------------
 
     def __getitem__(self, index: Any) -> Self:
-        """Get subset with DataComponent type and propagated attributes."""
+        """
+        Get subset with DataComponent type and propagated attributes.
+
+        Parameters
+        ----------
+        index : Any
+            Array index or slice.
+
+        Returns
+        -------
+        Self
+            Subset with propagated dimensions and metadata.
+        """
         result = super().__getitem__(index)
         if isinstance(result, np.ndarray) and not isinstance(result, DataComponent):
             result = self.wrap(result)
@@ -327,6 +369,22 @@ class DataComponent(np.ndarray):
         Apply ufunc and maintain DataComponent type.
 
         Converts inputs to plain arrays, applies ufunc, then wraps result.
+
+        Parameters
+        ----------
+        ufunc : np.ufunc
+            Universal function to apply.
+        method : str
+            Ufunc method name (e.g. ``"__call__"``, ``"reduce"``).
+        *inputs : np.ndarray
+            Input arrays.
+        **kwargs : Any
+            Additional keyword arguments forwarded to the ufunc.
+
+        Returns
+        -------
+        Any
+            Result with DataComponent type when applicable.
         """
         args = [i.view(np.ndarray) if isinstance(i, DataComponent) else i for i in inputs]
         result = getattr(ufunc, method)(*args, **kwargs)
@@ -362,12 +420,12 @@ class DataComponent(np.ndarray):
 
         Parameters
         ----------
-        *axes : SupportsIndex
+        *axes : SupportsIndex | Sequence[SupportsIndex] | None
             New axis order. If empty, reverses axes.
 
         Returns
         -------
-        DataComponent
+        Self
             Transposed array with updated dims.
         """
         result = super().transpose(*axes)  # type: ignore[arg-type]
@@ -383,7 +441,14 @@ class DataComponent(np.ndarray):
 
     @property
     def T(self) -> Self:
-        """Transposed array with updated dims."""
+        """
+        Return transposed array with updated dims.
+
+        Returns
+        -------
+        Self
+            Transposed view.
+        """
         return self.transpose()
 
     def swapaxes(self, axis1: SupportsIndex, axis2: SupportsIndex) -> Self:
@@ -397,7 +462,7 @@ class DataComponent(np.ndarray):
 
         Returns
         -------
-        DataComponent
+        Self
             Array with swapped axes and updated dims.
         """
         result = super().swapaxes(axis1, axis2)
@@ -418,7 +483,7 @@ class DataComponent(np.ndarray):
 
         Returns
         -------
-        DataComponent
+        Self
             Array with moved axis and updated dims.
         """
         result = np.moveaxis(self, source, destination)
@@ -427,9 +492,39 @@ class DataComponent(np.ndarray):
         return result
 
     def rollaxis(self, axis: int, start: int = 0) -> Self:
-        """Not implemented - requires manual dimension update."""
+        """
+        Roll the specified axis to a given position.
+
+        Not implemented — requires manual dimension update.
+
+        Parameters
+        ----------
+        axis : int
+            Axis to roll.
+        start : int, optional
+            Target position, by default 0.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised; update dimension names manually.
+        """
         raise NotImplementedError("Update dimension names manually after rollaxis.")
 
     def flip(self, axis: int) -> Self:
-        """Not implemented - requires manual dimension update."""
+        """
+        Reverse elements along the given axis.
+
+        Not implemented — requires manual dimension update.
+
+        Parameters
+        ----------
+        axis : int
+            Axis to reverse.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised; update dimension names manually.
+        """
         raise NotImplementedError("Update dimension names manually after flip.")

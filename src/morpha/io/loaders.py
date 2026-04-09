@@ -30,6 +30,16 @@ class Loader(IOHandler):
     """
     Abstract base class for loading data from files.
 
+    Parameters
+    ----------
+    path : str or Path
+        Path to load from.
+
+    Raises
+    ------
+    FileNotFoundError
+        If file doesn't exist.
+
     Class Attributes
     ----------------
     EXT : frozenset[str]
@@ -40,21 +50,6 @@ class Loader(IOHandler):
     path : Path
         Source file path.
 
-    Parameters
-    ----------
-    path : str or Path
-        Path to load from.
-
-    Examples
-    --------
-    >>> loader = LoaderPKL("data/file")
-    >>> obj = loader.load()  # Loads from data/file.pkl
-
-    Raises
-    ------
-    FileNotFoundError
-        If file doesn't exist.
-
     Notes
     -----
     Uses Template Method pattern: `load()` handles common logic,
@@ -63,6 +58,11 @@ class Loader(IOHandler):
     See Also
     --------
     Saver : For saving data.
+
+    Examples
+    --------
+    >>> loader = LoaderPKL("data/file")
+    >>> obj = loader.load()  # Loads from data/file.pkl
     """
 
     def __init__(self, path: Union[str, Path]) -> None:

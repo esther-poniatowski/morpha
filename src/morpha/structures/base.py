@@ -34,6 +34,13 @@ class DataStructure(ABC, Generic[AnyCoreData]):
     - Dimension tracking
     - Schema validation via class attributes
 
+    Parameters
+    ----------
+    data : AnyCoreData, optional
+        Core data component.
+    **coords : Coordinate
+        Coordinate components keyed by attribute name.
+
     Class Attributes
     ----------------
     DIMENSIONS_SPEC : DimensionsSpec
@@ -57,12 +64,10 @@ class DataStructure(ABC, Generic[AnyCoreData]):
     data : AnyCoreData
         Core data values.
 
-    Parameters
-    ----------
-    data : AnyCoreData, optional
-        Core data component.
-    **coords : Coordinate
-        Coordinate components keyed by attribute name.
+    Notes
+    -----
+    The `__init_subclass__` hook enforces that subclasses define required
+    class attributes, providing compile-time-like checks for schema compliance.
 
     Examples
     --------
@@ -78,11 +83,6 @@ class DataStructure(ABC, Generic[AnyCoreData]):
     >>> ts = TimeSeries(data=my_data, time=time_coord)
     >>> ts.dims
     Dimensions['time', 'units']
-
-    Notes
-    -----
-    The `__init_subclass__` hook enforces that subclasses define required
-    class attributes, providing compile-time-like checks for schema compliance.
     """
 
     DIMENSIONS_SPEC: DimensionsSpec
@@ -91,7 +91,14 @@ class DataStructure(ABC, Generic[AnyCoreData]):
     REQUIRED_IN_SUBCLASSES: Tuple[str, ...] = ("DIMENSIONS_SPEC", "COMPONENTS_SPEC", "IDENTIFIERS")
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
-        """Ensure subclasses define required class attributes."""
+        """
+        Ensure subclasses define required class attributes.
+
+        Parameters
+        ----------
+        **kwargs : Any
+            Keyword arguments forwarded to ``super().__init_subclass__``.
+        """
         super().__init_subclass__(**kwargs)
         for class_attr in cls.REQUIRED_IN_SUBCLASSES:
             if class_attr not in cls.__dict__:
@@ -127,7 +134,14 @@ class DataStructure(ABC, Generic[AnyCoreData]):
     # --- Getter Methods ---------------------------------------------------------------------------
 
     def has_data(self) -> bool:
-        """Check if data has been set."""
+        """
+        Check if data has been set.
+
+        Returns
+        -------
+        bool
+            True if data has been assigned.
+        """
         return self._data is not None
 
     @property
@@ -192,29 +206,96 @@ class DataStructure(ABC, Generic[AnyCoreData]):
         return getattr(self, name)
 
     def get_coords_from_dim(self, dim: str) -> Mapping[str, "Coordinate"]:
-        """Get all coordinates associated with a dimension."""
+        """
+        Get all coordinates associated with a dimension.
+
+        Parameters
+        ----------
+        dim : str
+            Dimension name.
+
+        Returns
+        -------
+        Mapping[str, Coordinate]
+            Coordinates whose dims include *dim*.
+        """
         return {name: coord for name, coord in self.iter_coords() if dim in coord.dims}
 
     def iter_coords(self) -> Generator[Tuple[str, "Coordinate"], None, None]:
-        """Iterate over active coordinates."""
+        """
+        Iterate over active coordinates.
+
+        Yields
+        ------
+        Tuple[str, Coordinate]
+            Name and coordinate instance.
+        """
         for name in self.coords:
             yield name, getattr(self, name)
 
     @property
     def shape(self) -> Tuple[int, ...]:
-        """Shape of the core data."""
+        """
+        Return the shape of the core data.
+
+        Returns
+        -------
+        Tuple[int, ...]
+            Shape tuple.
+        """
         return self.data.shape
 
     def get_dim(self, axis: int) -> str:
-        """Get dimension name by axis index."""
+        """
+        Get dimension name by axis index.
+
+        Parameters
+        ----------
+        axis : int
+            Axis index.
+
+        Returns
+        -------
+        str
+            Dimension name.
+        """
         return self.dims.get_dim(axis)
 
     def get_axis(self, name: str) -> int:
-        """Get axis index by dimension name."""
+        """
+        Get axis index by dimension name.
+
+        Parameters
+        ----------
+        name : str
+            Dimension name.
+
+        Returns
+        -------
+        int
+            Axis index.
+        """
         return self.dims.get_axis(name)
 
     def get_size(self, name: str) -> int:
-        """Get size along a dimension."""
+        """
+        Get size along a dimension.
+
+        Parameters
+        ----------
+        name : str
+            Dimension name.
+
+        Returns
+        -------
+        int
+            Size along that dimension.
+
+        Raises
+        ------
+        ValueError
+            If the dimension is not active or not found.
+        """
         if name not in self.dims:
             raise ValueError(f"Dimension '{name}' not active in {self.dims}.")
         if self.has_data():
@@ -226,22 +307,50 @@ class DataStructure(ABC, Generic[AnyCoreData]):
 
     @property
     def identifiers(self) -> Set[str]:
-        """Names of identifier attributes."""
+        """
+        Return names of identifier attributes.
+
+        Returns
+        -------
+        Set[str]
+            Identifier attribute names from IDENTIFIERS.
+        """
         return set(self.IDENTIFIERS.keys()) if hasattr(self, "IDENTIFIERS") else set()
 
     @property
     def ndim(self) -> int:
-        """Number of dimensions of the core data."""
+        """
+        Return the number of dimensions of the core data.
+
+        Returns
+        -------
+        int
+            Dimensionality.
+        """
         return self.data.ndim
 
     @property
     def dtype(self) -> "np.dtype[Any]":
-        """Data type of the core data."""
+        """
+        Return the data type of the core data.
+
+        Returns
+        -------
+        np.dtype[Any]
+            NumPy data type.
+        """
         return self.data.dtype
 
     @property
     def size(self) -> int:
-        """Total number of elements in the core data."""
+        """
+        Return the total number of elements in the core data.
+
+        Returns
+        -------
+        int
+            Total element count.
+        """
         return self.data.size
 
     # --- Setter Methods ---------------------------------------------------------------------------
@@ -296,12 +405,26 @@ class DataStructure(ABC, Generic[AnyCoreData]):
         self.register_dimensions(coord.dims)
 
     def register_coord(self, name: str) -> None:
-        """Register an active coordinate."""
+        """
+        Register an active coordinate.
+
+        Parameters
+        ----------
+        name : str
+            Coordinate attribute name.
+        """
         if name not in self.coords:
             self.coords.add(name)
 
     def register_dimensions(self, dims: Dimensions) -> None:
-        """Register new dimensions."""
+        """
+        Register new dimensions.
+
+        Parameters
+        ----------
+        dims : Dimensions
+            Dimensions to add if not already present.
+        """
         for dim in dims:
             if dim not in self.dims:
                 self.dims.add(dim)
@@ -335,7 +458,14 @@ class DataStructure(ABC, Generic[AnyCoreData]):
     # --- Data Manipulations -----------------------------------------------------------------------
 
     def copy(self) -> Self:
-        """Create a deep copy."""
+        """
+        Create a deep copy.
+
+        Returns
+        -------
+        Self
+            Independent copy of this data structure.
+        """
         return copy.deepcopy(self)
 
     def sel(self, **kwargs: Any) -> Self:
@@ -344,17 +474,18 @@ class DataStructure(ABC, Generic[AnyCoreData]):
 
         Parameters
         ----------
-        **kwargs
+        **kwargs : Any
             Coordinate names and selection criteria (value, list, or slice).
 
         Returns
         -------
-        DataStructure
+        Self
             New structure with selected data.
 
-        Note
-        ----
-        Not yet implemented.
+        Raises
+        ------
+        NotImplementedError
+            Always raised; selection is not yet available.
         """
         raise NotImplementedError(
             f"{self.__class__.__name__}.sel() is not implemented yet; "

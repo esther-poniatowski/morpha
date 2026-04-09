@@ -33,6 +33,16 @@ class Saver(IOHandler):
     Separates path specification from data, enabling dependency injection
     where the saver is configured before data is available.
 
+    Parameters
+    ----------
+    path : str or Path
+        Path to save to.
+
+    Raises
+    ------
+    FileNotFoundError
+        If parent directory doesn't exist.
+
     Class Attributes
     ----------------
     EXT : frozenset[str]
@@ -43,21 +53,6 @@ class Saver(IOHandler):
     path : Path
         Target file path.
 
-    Parameters
-    ----------
-    path : str or Path
-        Path to save to.
-
-    Examples
-    --------
-    >>> saver = SaverPKL("output/data")
-    >>> saver.save(my_object)  # Saves to output/data.pkl
-
-    Raises
-    ------
-    FileNotFoundError
-        If parent directory doesn't exist.
-
     Notes
     -----
     Uses Template Method pattern: `save()` handles common logic,
@@ -66,6 +61,11 @@ class Saver(IOHandler):
     See Also
     --------
     Loader : For loading saved data.
+
+    Examples
+    --------
+    >>> saver = SaverPKL("output/data")
+    >>> saver.save(my_object)  # Saves to output/data.pkl
     """
 
     def __init__(self, path: Union[str, Path]) -> None:
@@ -98,7 +98,14 @@ class Saver(IOHandler):
 
     @abstractmethod
     def _save(self, data: Any) -> None:
-        """Implement format-specific saving logic."""
+        """
+        Implement format-specific saving logic.
+
+        Parameters
+        ----------
+        data : Any
+            Data to serialize.
+        """
         ...
 
 
@@ -142,11 +149,6 @@ class SaverNPZ(Saver):
     Save multiple arrays as compressed .npz files.
 
     Accepts either a single array or a dictionary of arrays.
-
-    Parameters
-    ----------
-    data : np.ndarray | Dict[str, np.ndarray]
-        Single array or dictionary mapping names to arrays.
 
     See Also
     --------

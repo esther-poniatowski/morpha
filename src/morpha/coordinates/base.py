@@ -33,12 +33,20 @@ class Coordinate(DataComponent, Generic[AnyAttribute]):
         Attribute type for valid coordinate values.
         Determines data type and valid values for the array.
 
-    Parameters
+    Attributes
     ----------
-    values : ArrayLike
-        Coordinate labels.
-    **metadata
-        Additional metadata attributes.
+    ATTRIBUTE : Type[AnyAttribute]
+        Attribute type for valid coordinate values (set on subclasses).
+
+    Notes
+    -----
+    The `validate` method checks that all values are valid for the
+    associated ATTRIBUTE type using `Attribute.is_valid`.
+
+    See Also
+    --------
+    DataComponent : Base class.
+    Attribute : Mixin for coordinate value types.
 
     Examples
     --------
@@ -53,16 +61,6 @@ class Coordinate(DataComponent, Generic[AnyAttribute]):
     >>> coord = CoordTask(["PTD", "PTD", "CLK"])
     >>> coord.get_attribute()
     <class 'Task'>
-
-    Notes
-    -----
-    The `validate` method checks that all values are valid for the
-    associated ATTRIBUTE type using `Attribute.is_valid`.
-
-    See Also
-    --------
-    DataComponent : Base class.
-    Attribute : Mixin for coordinate value types.
     """
 
     ATTRIBUTE: Type[AnyAttribute]
@@ -76,7 +74,7 @@ class Coordinate(DataComponent, Generic[AnyAttribute]):
         ----------
         values : ArrayLike
             Values to validate.
-        **kwargs
+        **kwargs : Any
             Additional validation arguments.
 
         Raises
@@ -96,7 +94,14 @@ class Coordinate(DataComponent, Generic[AnyAttribute]):
 
     @classmethod
     def get_attribute(cls) -> Type[AnyAttribute]:
-        """Get the associated attribute type."""
+        """
+        Get the associated attribute type.
+
+        Returns
+        -------
+        Type[AnyAttribute]
+            The ATTRIBUTE class.
+        """
         return cls.ATTRIBUTE
 
     @classmethod
@@ -106,7 +111,7 @@ class Coordinate(DataComponent, Generic[AnyAttribute]):
 
         Parameters
         ----------
-        attribute_type : Type[Attribute]
+        attribute_type : Type[Attribute[Any]]
             Attribute type to check for.
 
         Returns

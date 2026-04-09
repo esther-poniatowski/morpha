@@ -46,13 +46,13 @@ class Container(UserDict[K, V], Generic[K, V]):
 
     Parameters
     ----------
-    *args
+    *args : Any
         Arguments passed to UserDict.
     key_type : Type[K]
         Expected type for keys.
     value_type : Type[V]
         Expected type for values.
-    **kwargs
+    **kwargs : Any
         Keyword arguments passed to UserDict.
 
     Attributes
@@ -91,7 +91,16 @@ class Container(UserDict[K, V], Generic[K, V]):
         super().__init__(*args, **kwargs)
 
     def __setitem__(self, key: K, value: V) -> None:
-        """Set item with type checking."""
+        """
+        Set item with type checking.
+
+        Parameters
+        ----------
+        key : K
+            Item key.
+        value : V
+            Item value.
+        """
         if not isinstance(key, self.key_type):
             raise TypeError(
                 f"Invalid key type: {type(key).__name__} instead of {self.key_type.__name__}"
@@ -127,7 +136,7 @@ class Container(UserDict[K, V], Generic[K, V]):
 
         Returns
         -------
-        Container
+        C
             New container with specified keys and fill value.
         """
         if key_type is None:
@@ -137,7 +146,14 @@ class Container(UserDict[K, V], Generic[K, V]):
         return cls({key: fill_value for key in keys}, key_type=key_type, value_type=value_type)
 
     def list_keys(self) -> List[K]:
-        """Get list of keys."""
+        """
+        Get list of keys.
+
+        Returns
+        -------
+        List[K]
+            Keys in insertion order.
+        """
         return list(self.data.keys())
 
     def list_values(self, keys: Iterable[K] | None = None) -> List[V]:
@@ -159,7 +175,14 @@ class Container(UserDict[K, V], Generic[K, V]):
         return [self.data[k] for k in keys]
 
     def to_dict(self) -> Dict[K, V]:
-        """Convert to plain dictionary."""
+        """
+        Convert to plain dictionary.
+
+        Returns
+        -------
+        Dict[K, V]
+            Shallow copy of the underlying data.
+        """
         return dict(self.data)
 
     def get_subset(self, keys: Iterable[K]) -> Self:
@@ -173,7 +196,7 @@ class Container(UserDict[K, V], Generic[K, V]):
 
         Returns
         -------
-        Container
+        Self
             New container with subset of data.
         """
         subset_data = {k: v for k, v in self.data.items() if k in keys}
@@ -190,7 +213,7 @@ class Container(UserDict[K, V], Generic[K, V]):
 
         Returns
         -------
-        Container
+        Self
             Filtered container.
         """
         return self.get_subset([k for k in self.data.keys() if predicate(k)])
@@ -206,7 +229,7 @@ class Container(UserDict[K, V], Generic[K, V]):
 
         Returns
         -------
-        Container
+        Self
             Filtered container.
         """
         return self.get_subset([k for k, v in self.data.items() if predicate(v)])
@@ -219,7 +242,7 @@ class Container(UserDict[K, V], Generic[K, V]):
         ----------
         func : Callable[[K], V]
             Function taking key and returning value.
-        **kwargs
+        **kwargs : Any
             Additional arguments for func.
         """
         for key in self.data.keys():
@@ -233,7 +256,7 @@ class Container(UserDict[K, V], Generic[K, V]):
         ----------
         func : Callable[[V], R]
             Function to apply.
-        **kwargs
+        **kwargs : Any
             Additional arguments for func.
 
         Returns

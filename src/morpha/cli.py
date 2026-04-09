@@ -1,8 +1,8 @@
 """
 Command-line interface for Morpha.
 
-Commands
---------
+Functions
+---------
 info
     Display package information.
 version

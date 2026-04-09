@@ -52,7 +52,14 @@ class ComponentSpec:
 
     @property
     def spec(self):
-        """Read-only mapping of attribute names to expected component types."""
+        """
+        Return read-only mapping of attribute names to expected component types.
+
+        Returns
+        -------
+        MappingProxyType
+            Immutable view of the specification.
+        """
         return MappingProxyType(self._spec)
 
     def validate(self, name: str, component: "DataComponent") -> None:
@@ -81,21 +88,61 @@ class ComponentSpec:
             )
 
     def __contains__(self, name: str) -> bool:
-        """Check if a name is in the specification."""
+        """
+        Check if a name is in the specification.
+
+        Parameters
+        ----------
+        name : str
+            Component name to look up.
+
+        Returns
+        -------
+        bool
+            True if the name is registered.
+        """
         return name in self._spec
 
     def __iter__(self):
-        """Iterate over component names."""
+        """
+        Return an iterator over registered component names.
+
+        Returns
+        -------
+        Iterator[str]
+            Iterator yielding component names.
+        """
         return iter(self._spec)
 
     def keys(self):
-        """Return component names."""
+        """
+        Return component names.
+
+        Returns
+        -------
+        KeysView
+            View of component names.
+        """
         return self._spec.keys()
 
     def values(self):
-        """Return expected component types."""
+        """
+        Return expected component types.
+
+        Returns
+        -------
+        ValuesView
+            View of component types.
+        """
         return self._spec.values()
 
     def items(self):
-        """Return (name, type) pairs."""
+        """
+        Return (name, type) pairs.
+
+        Returns
+        -------
+        ItemsView
+            View of (name, type) pairs.
+        """
         return self._spec.items()

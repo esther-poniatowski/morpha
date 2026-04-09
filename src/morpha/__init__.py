@@ -33,6 +33,14 @@ except PackageNotFoundError:
     __version__ = "0.0.0+unknown"
 
 def info() -> str:
+    """
+    Return a summary string with package name, version, and platform.
+
+    Returns
+    -------
+    str
+        Formatted info string.
+    """
     return f"{__package__} {__version__} | Platform: {platform.system()} Python {platform.python_version()}"
 
 # Core components
