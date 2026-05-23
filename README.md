@@ -84,7 +84,7 @@ print(data.get_axis("units")) # 1
 
 ## Contributing
 
-Contribution guidelines are described in [CONTRIBUTING.md](CONTRIBUTING.md).
+[How to contribute, report issues, and submit pull requests](CONTRIBUTING.md).
 
 ---
 
