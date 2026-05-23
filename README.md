@@ -73,14 +73,12 @@ print(data.get_axis("units")) # 1
 
 ## Documentation
 
-| Guide | Content |
-| ----- | ------- |
+| Document | Content |
+| -------- | ------- |
 | [Installation](docs/guide/installation.md) | Prerequisites, pip setup |
 | [Usage](docs/guide/usage.md) | DataComponent, DataStructure, coordinates, I/O |
 | [Concepts](docs/guide/concepts.md) | Core abstractions and design |
-
-Full API documentation and rendered guides are also available at
-[esther-poniatowski.github.io/morpha](https://esther-poniatowski.github.io/morpha/).
+| [API Reference](docs/api/index.md) | Generated module-by-module API docs |
 
 ---
 
