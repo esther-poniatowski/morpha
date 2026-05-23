@@ -2,32 +2,20 @@
 
 Provides reusable data structures for scientific computing in Python.
 
-```{toctree}
-:maxdepth: 2
-:caption: User Guide
+## User Guide
 
-guide/installation
-guide/usage
-guide/concepts
-```
+- [Installation](guide/installation.md)
+- [Usage](guide/usage.md)
+- [Concepts](guide/concepts.md)
 
-```{toctree}
-:maxdepth: 2
-:caption: API Reference
+## API Reference
 
-api/index
-```
+- [API Reference](api/index.md)
 
-```{toctree}
-:maxdepth: 2
-:caption: Developer Internals
+## Developer Internals
 
-internals/index
-```
+- [Internals](internals/index.md)
 
-```{toctree}
-:maxdepth: 1
-:caption: Architecture Decisions
+## Architecture Decisions
 
-adr/adr-template
-```
+- [ADR template](adr/adr-template.md)
