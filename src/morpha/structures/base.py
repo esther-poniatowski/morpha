@@ -1,11 +1,4 @@
-"""
-Base data structure class.
-
-Classes
--------
-DataStructure
-    Abstract base class for composite data structures with schema enforcement.
-"""
+"""Base data structure class."""
 
 from abc import ABC
 import copy
@@ -61,8 +54,6 @@ class DataStructure(ABC, Generic[AnyCoreData]):
         Active dimensions in this instance.
     coords : Set[str]
         Names of active coordinates.
-    data : AnyCoreData
-        Core data values.
 
     Notes
     -----

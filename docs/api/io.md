@@ -12,16 +12,6 @@ Saver and Loader implementations for various file formats.
 
 Base I/O classes.
 
-<a id="classes"></a>
-
-### Classes
-
-FileExt
-: File extension type with validation.
-
-IOHandler
-: Abstract base class for file I/O operations.
-
 <a id="morpha.io.base.FileExt"></a>
 
 ### *class* morpha.io.base.FileExt(ext)
@@ -158,20 +148,6 @@ Enforce a specific extension on a path.
 ## Savers
 
 Saver implementations for various file formats.
-
-### Classes
-
-Saver
-: Abstract base class for saving data.
-
-SaverPKL
-: Save objects as Pickle files.
-
-SaverNPY
-: Save arrays as NumPy files.
-
-SaverNPZ
-: Save multiple arrays as compressed NumPy files.
 
 <a id="morpha.io.savers.Saver"></a>
 
@@ -362,20 +338,6 @@ Save data to HDF5 files.
 ## Loaders
 
 Loader implementations for various file formats.
-
-### Classes
-
-Loader
-: Abstract base class for loading data.
-
-LoaderPKL
-: Load objects from Pickle files.
-
-LoaderNPY
-: Load arrays from NumPy files.
-
-LoaderNPZ
-: Load multiple arrays from compressed NumPy files.
 
 <a id="morpha.io.loaders.Loader"></a>
 

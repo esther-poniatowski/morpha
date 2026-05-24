@@ -1,17 +1,4 @@
-"""
-Saver implementations for various file formats.
-
-Classes
--------
-Saver
-    Abstract base class for saving data.
-SaverPKL
-    Save objects as Pickle files.
-SaverNPY
-    Save arrays as NumPy files.
-SaverNPZ
-    Save multiple arrays as compressed NumPy files.
-"""
+"""Saver implementations for various file formats."""
 
 from abc import abstractmethod
 from pathlib import Path

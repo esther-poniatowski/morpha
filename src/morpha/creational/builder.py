@@ -1,11 +1,4 @@
-"""
-Builder pattern for constructing data structures.
-
-Classes
--------
-Builder
-    Abstract base class for step-by-step data structure construction.
-"""
+"""Builder pattern for constructing data structures."""
 
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Type, Tuple, Any, Optional

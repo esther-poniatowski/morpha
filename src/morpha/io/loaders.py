@@ -1,17 +1,4 @@
-"""
-Loader implementations for various file formats.
-
-Classes
--------
-Loader
-    Abstract base class for loading data.
-LoaderPKL
-    Load objects from Pickle files.
-LoaderNPY
-    Load arrays from NumPy files.
-LoaderNPZ
-    Load multiple arrays from compressed NumPy files.
-"""
+"""Loader implementations for various file formats."""
 
 from abc import abstractmethod
 from pathlib import Path

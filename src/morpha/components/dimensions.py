@@ -1,13 +1,4 @@
-"""
-Dimension management for data components.
-
-Classes
--------
-Dimensions
-    Named dimension labels for array axes.
-DimensionsSpec
-    Specification for validating dimension names in data structures.
-"""
+"""Dimension management for data components."""
 
 from collections import UserList, OrderedDict
 from types import MappingProxyType
@@ -309,11 +300,6 @@ class DimensionsSpec:
     ----------
     **kwargs : bool
         Dimension names as keys, with True for required and False for optional.
-
-    Attributes
-    ----------
-    spec : OrderedDict[str, bool]
-        Ordered mapping of dimension names to required status.
 
     Examples
     --------

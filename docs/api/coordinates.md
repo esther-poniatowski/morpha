@@ -12,13 +12,6 @@ Labeled axes with attribute validation.
 
 Base coordinate class.
 
-<a id="classes"></a>
-
-### Classes
-
-Coordinate
-: DataComponent subclass representing labeled axes.
-
 <a id="morpha.coordinates.base.AnyAttribute"></a>
 
 ### *class* morpha.coordinates.base.AnyAttribute
@@ -37,25 +30,6 @@ Base class for coordinates representing labeled axes.
 
 A Coordinate is a DataComponent that holds axis labels, with validation
 based on an associated Attribute type.
-
-* **Class Attributes:**
-  **ATTRIBUTE** (*Type[Attribute]*) – Attribute type for valid coordinate values.
-  Determines data type and valid values for the array.
-* **Parameters:**
-  * **values** (*ArrayLike*)
-  * **dims** ([*Dimensions*](components.md#morpha.components.dimensions.Dimensions))
-  * **metadata** ([*Any*](https://docs.python.org/3/library/typing.html#typing.Any))
-* **Return type:**
-  [*Self*](https://docs.python.org/3/library/typing.html#typing.Self)
-
-<a id="morpha.coordinates.base.Coordinate.ATTRIBUTE"></a>
-
-#### ATTRIBUTE
-
-Attribute type for valid coordinate values (set on subclasses).
-
-* **Type:**
-  Type[[AnyAttribute](#morpha.coordinates.base.AnyAttribute)]
 
 ### Notes
 
@@ -88,9 +62,19 @@ Create coordinate instances:
 <class 'Task'>
 ```
 
-<a id="id0"></a>
+* **Parameters:**
+  * **values** (*ArrayLike*)
+  * **dims** ([*Dimensions*](components.md#morpha.components.dimensions.Dimensions))
+  * **metadata** ([*Any*](https://docs.python.org/3/library/typing.html#typing.Any))
+* **Return type:**
+  [*Self*](https://docs.python.org/3/library/typing.html#typing.Self)
+
+<a id="morpha.coordinates.base.Coordinate.ATTRIBUTE"></a>
 
 #### ATTRIBUTE *: [Type](https://docs.python.org/3/library/typing.html#typing.Type)[[AnyAttribute](#morpha.coordinates.base.AnyAttribute)]*
+
+Attribute type for valid coordinate values. Set on subclasses;
+determines the data type and valid values for the array.
 
 <a id="morpha.coordinates.base.Coordinate.validate"></a>
 
@@ -155,11 +139,6 @@ Get boolean mask of valid values.
 
 Attribute mixin for coordinate values.
 
-### Classes
-
-Attribute
-: Mixin providing validation and labeling for coordinate value types.
-
 <a id="morpha.coordinates.attributes.BaseT"></a>
 
 ### *class* morpha.coordinates.attributes.BaseT
@@ -178,28 +157,6 @@ Mixin class for attribute types with validation and labeling.
 
 Provides a common interface for types representing categorical or
 constrained values that can be used in coordinates.
-
-* **Class Attributes:**
-  * **OPTIONS** (*FrozenSet[BaseT]*) – Valid values for this attribute type.
-  * **LABELS** (*Mapping[BaseT, str]*) – Human-readable labels for valid values.
-
-<a id="morpha.coordinates.attributes.Attribute.OPTIONS"></a>
-
-#### OPTIONS
-
-Valid values for this attribute type (set on subclasses).
-
-* **Type:**
-  FrozenSet[[BaseT](#morpha.coordinates.attributes.BaseT)]
-
-<a id="morpha.coordinates.attributes.Attribute.LABELS"></a>
-
-#### LABELS
-
-Human-readable labels for valid values (set on subclasses).
-
-* **Type:**
-  Mapping[[BaseT](#morpha.coordinates.attributes.BaseT), [str](https://docs.python.org/3/library/stdtypes.html#str)]
 
 ### Notes
 
@@ -239,13 +196,18 @@ True
 False
 ```
 
-<a id="id1"></a>
+<a id="morpha.coordinates.attributes.Attribute.OPTIONS"></a>
 
 #### OPTIONS *: [FrozenSet](https://docs.python.org/3/library/typing.html#typing.FrozenSet)[[BaseT](#morpha.coordinates.attributes.BaseT)]*
 
-<a id="id2"></a>
+Valid values for this attribute type. Set on subclasses.
+
+<a id="morpha.coordinates.attributes.Attribute.LABELS"></a>
 
 #### LABELS *: [Mapping](https://docs.python.org/3/library/typing.html#typing.Mapping)[[BaseT](#morpha.coordinates.attributes.BaseT), [str](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+Human-readable labels for valid values, keyed by the option value.
+Set on subclasses.
 
 <a id="morpha.coordinates.attributes.Attribute.is_valid"></a>
 

@@ -1,11 +1,4 @@
-"""
-Generic typed container.
-
-Classes
--------
-Container
-    Type-checked dictionary-like container.
-"""
+"""Generic typed container."""
 
 from collections import UserDict
 from typing import (

@@ -12,13 +12,6 @@ Abstract base classes for composite data structures.
 
 Base data structure class.
 
-<a id="classes"></a>
-
-### Classes
-
-DataStructure
-: Abstract base class for composite data structures with schema enforcement.
-
 <a id="morpha.structures.base.AnyCoreData"></a>
 
 ### *class* morpha.structures.base.AnyCoreData
@@ -70,15 +63,6 @@ Names of active coordinates.
 
 * **Type:**
   Set[[str](https://docs.python.org/3/library/stdtypes.html#str)]
-
-<a id="morpha.structures.base.DataStructure.data"></a>
-
-#### data
-
-Core data values.
-
-* **Type:**
-  [AnyCoreData](#morpha.structures.base.AnyCoreData)
 
 ### Notes
 
@@ -146,7 +130,7 @@ Check if data has been set.
 * **Return type:**
   [bool](https://docs.python.org/3/library/functions.html#bool)
 
-<a id="id0"></a>
+<a id="morpha.structures.base.DataStructure.data"></a>
 
 #### *property* data *: [AnyCoreData](#morpha.structures.base.AnyCoreData)*
 
@@ -407,11 +391,6 @@ Select data along coordinates.
 ## Containers
 
 Generic typed container.
-
-### Classes
-
-Container
-: Type-checked dictionary-like container.
 
 <a id="morpha.structures.containers.K"></a>
 

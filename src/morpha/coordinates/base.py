@@ -1,11 +1,4 @@
-"""
-Base coordinate class.
-
-Classes
--------
-Coordinate
-    DataComponent subclass representing labeled axes.
-"""
+"""Base coordinate class."""
 
 from typing import Type, TypeVar, Generic, Any
 
@@ -26,17 +19,6 @@ class Coordinate(DataComponent, Generic[AnyAttribute]):
 
     A Coordinate is a DataComponent that holds axis labels, with validation
     based on an associated Attribute type.
-
-    Class Attributes
-    ----------------
-    ATTRIBUTE : Type[Attribute]
-        Attribute type for valid coordinate values.
-        Determines data type and valid values for the array.
-
-    Attributes
-    ----------
-    ATTRIBUTE : Type[AnyAttribute]
-        Attribute type for valid coordinate values (set on subclasses).
 
     Notes
     -----
@@ -64,6 +46,8 @@ class Coordinate(DataComponent, Generic[AnyAttribute]):
     """
 
     ATTRIBUTE: Type[AnyAttribute]
+    """Attribute type for valid coordinate values. Set on subclasses;
+    determines the data type and valid values for the array."""
 
     @classmethod
     def validate(cls, values: ArrayLike, **kwargs: Any) -> None:

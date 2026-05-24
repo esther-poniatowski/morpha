@@ -1,11 +1,4 @@
-"""
-Base data component class.
-
-Classes
--------
-DataComponent
-    NumPy ndarray subclass with dimension annotations and metadata propagation.
-"""
+"""Base data component class."""
 
 from typing import Tuple, Self, Mapping, Any, SupportsIndex, Sequence, overload
 
@@ -48,11 +41,6 @@ class DataComponent(np.ndarray):
     SENTINEL : int | float | str
         Value marking missing/unset entries.
         Define in subclasses.
-
-    Attributes
-    ----------
-    dims : Dimensions
-        Names for each array dimension.
 
     Notes
     -----

@@ -12,13 +12,6 @@ Core data components with dimension annotations.
 
 Base data component class.
 
-<a id="classes"></a>
-
-### Classes
-
-DataComponent
-: NumPy ndarray subclass with dimension annotations and metadata propagation.
-
 <a id="morpha.components.base.DataComponent"></a>
 
 ### *class* morpha.components.base.DataComponent(values, dims=None, \*\*metadata)
@@ -47,15 +40,6 @@ Subclass of numpy.ndarray that adds:
     Define in subclasses.
 * **Return type:**
   [*Self*](https://docs.python.org/3/library/typing.html#typing.Self)
-
-<a id="morpha.components.base.DataComponent.dims"></a>
-
-#### dims
-
-Names for each array dimension.
-
-* **Type:**
-  [Dimensions](#morpha.components.dimensions.Dimensions)
 
 ### Notes
 
@@ -90,7 +74,7 @@ Get dimension information:
 
 #### DIMENSIONS_SPEC *: [DimensionsSpec](#morpha.components.dimensions.DimensionsSpec)*
 
-<a id="id0"></a>
+<a id="morpha.components.base.DataComponent.dims"></a>
 
 #### dims *: [Dimensions](#morpha.components.dimensions.Dimensions)*
 
@@ -318,14 +302,6 @@ Not implemented — requires manual dimension update.
 
 Dimension management for data components.
 
-### Classes
-
-Dimensions
-: Named dimension labels for array axes.
-
-DimensionsSpec
-: Specification for validating dimension names in data structures.
-
 <a id="morpha.components.dimensions.Dimensions"></a>
 
 ### *class* morpha.components.dimensions.Dimensions(\*args)
@@ -551,15 +527,6 @@ Defines which dimensions are required vs optional, and their expected order.
 * **Parameters:**
   **\*\*kwargs** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – Dimension names as keys, with True for required and False for optional.
 
-<a id="morpha.components.dimensions.DimensionsSpec.spec"></a>
-
-#### spec
-
-Ordered mapping of dimension names to required status.
-
-* **Type:**
-  OrderedDict[[str](https://docs.python.org/3/library/stdtypes.html#str), [bool](https://docs.python.org/3/library/functions.html#bool)]
-
 ### Examples
 
 ```pycon
@@ -570,7 +537,7 @@ Dimensions['trials']
 Dimensions['units', 'time']
 ```
 
-<a id="id1"></a>
+<a id="morpha.components.dimensions.DimensionsSpec.spec"></a>
 
 #### *property* spec
 
@@ -625,11 +592,6 @@ Validate dimensions against the specification.
 
 Metadata field specification for data components.
 
-### Classes
-
-MetaDataField
-: Specification for a metadata attribute on a DataComponent.
-
 <a id="morpha.components.metadata.MetaDataField"></a>
 
 ### *class* morpha.components.metadata.MetaDataField(field_type, default_value)
@@ -640,28 +602,6 @@ Metadata field specification for a data component.
 
 Defines the expected type and default value for a metadata attribute
 that can be attached to DataComponent subclasses.
-
-* **Parameters:**
-  * **field_type** ([*Type*](https://docs.python.org/3/library/typing.html#typing.Type) *[*[*Any*](https://docs.python.org/3/library/typing.html#typing.Any) *]*)
-  * **default_value** ([*Any*](https://docs.python.org/3/library/typing.html#typing.Any))
-
-<a id="morpha.components.metadata.MetaDataField.field_type"></a>
-
-#### field_type
-
-Expected type of the metadata field.
-
-* **Type:**
-  Type[Any]
-
-<a id="morpha.components.metadata.MetaDataField.default_value"></a>
-
-#### default_value
-
-Default value for the field when not provided.
-
-* **Type:**
-  Any
 
 ### Examples
 
@@ -675,13 +615,21 @@ Define metadata fields for a custom DataComponent:
 ...     }
 ```
 
-<a id="id2"></a>
+* **Parameters:**
+  * **field_type** ([*Type*](https://docs.python.org/3/library/typing.html#typing.Type) *[*[*Any*](https://docs.python.org/3/library/typing.html#typing.Any) *]*)
+  * **default_value** ([*Any*](https://docs.python.org/3/library/typing.html#typing.Any))
+
+<a id="morpha.components.metadata.MetaDataField.field_type"></a>
 
 #### field_type *: [Type](https://docs.python.org/3/library/typing.html#typing.Type)[[Any](https://docs.python.org/3/library/typing.html#typing.Any)]*
 
-<a id="id3"></a>
+Expected type of the metadata field.
+
+<a id="morpha.components.metadata.MetaDataField.default_value"></a>
 
 #### default_value *: [Any](https://docs.python.org/3/library/typing.html#typing.Any)*
+
+Default value for the field when not provided.
 
 <a id="module-morpha.components.specs"></a>
 
@@ -690,11 +638,6 @@ Define metadata fields for a custom DataComponent:
 ## Specs
 
 Component specification for data structures.
-
-### Classes
-
-ComponentSpec
-: Specification of allowed data components in a data structure.
 
 <a id="morpha.components.specs.ComponentSpec"></a>
 
@@ -709,15 +652,6 @@ attribute names and types.
 
 * **Parameters:**
   **\*\*kwargs** (*Type* *[*[*DataComponent*](#morpha.components.base.DataComponent) *]*) – Component names as keys and their expected types as values.
-
-<a id="morpha.components.specs.ComponentSpec.spec"></a>
-
-#### spec
-
-Mapping of attribute names to expected component types.
-
-* **Type:**
-  Dict[[str](https://docs.python.org/3/library/stdtypes.html#str), Type[[DataComponent](#morpha.components.base.DataComponent)]]
 
 ### Examples
 
@@ -738,7 +672,7 @@ Validate a component:
 >>> spec.validate("data", time_coord)  # Raises TypeError
 ```
 
-<a id="id4"></a>
+<a id="morpha.components.specs.ComponentSpec.spec"></a>
 
 #### *property* spec
 

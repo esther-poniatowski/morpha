@@ -1,11 +1,4 @@
-"""
-Component specification for data structures.
-
-Classes
--------
-ComponentSpec
-    Specification of allowed data components in a data structure.
-"""
+"""Component specification for data structures."""
 
 from types import MappingProxyType
 from typing import Dict, Type, TYPE_CHECKING
@@ -25,11 +18,6 @@ class ComponentSpec:
     ----------
     **kwargs : Type[DataComponent]
         Component names as keys and their expected types as values.
-
-    Attributes
-    ----------
-    spec : Dict[str, Type[DataComponent]]
-        Mapping of attribute names to expected component types.
 
     Examples
     --------

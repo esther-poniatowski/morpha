@@ -12,13 +12,6 @@ Factory and Builder patterns for object creation.
 
 Factory pattern for creating data components.
 
-<a id="classes"></a>
-
-### Classes
-
-Factory
-: Abstract base class for creating data components.
-
 <a id="morpha.creational.factory.Products"></a>
 
 ### *class* morpha.creational.factory.Products
@@ -37,18 +30,6 @@ Abstract base class for creating data components.
 
 Factories encapsulate the logic for creating one or more coupled
 DataComponent instances from raw inputs.
-
-* **Class Attributes:**
-  **PRODUCT_CLASSES** (*Type[DataComponent] | Tuple[Type[DataComponent], …]*) – Class(es) of products this factory creates.
-
-<a id="morpha.creational.factory.Factory.PRODUCT_CLASSES"></a>
-
-#### PRODUCT_CLASSES
-
-Class(es) of products this factory creates (set on subclasses).
-
-* **Type:**
-  Type[[DataComponent](components.md#morpha.components.base.DataComponent)] | Tuple[Type[[DataComponent](components.md#morpha.components.base.DataComponent)], …]
 
 ### Notes
 
@@ -81,9 +62,11 @@ Use the factory:
 >>> coord = factory.create(np.arange(100), unit="ms")
 ```
 
-<a id="id0"></a>
+<a id="morpha.creational.factory.Factory.PRODUCT_CLASSES"></a>
 
 #### PRODUCT_CLASSES *: [Type](https://docs.python.org/3/library/typing.html#typing.Type)[[DataComponent](components.md#morpha.components.base.DataComponent)] | [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[Type](https://docs.python.org/3/library/typing.html#typing.Type)[[DataComponent](components.md#morpha.components.base.DataComponent)], ...]*
+
+Class(es) of products this factory creates. Set on subclasses.
 
 <a id="morpha.creational.factory.Factory.create"></a>
 
@@ -110,11 +93,6 @@ parameters for their specific product types.
 ## Builder
 
 Builder pattern for constructing data structures.
-
-### Classes
-
-Builder
-: Abstract base class for step-by-step data structure construction.
 
 <a id="morpha.creational.builder.Product"></a>
 

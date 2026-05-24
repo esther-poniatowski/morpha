@@ -1,11 +1,4 @@
-"""
-Factory pattern for creating data components.
-
-Classes
--------
-Factory
-    Abstract base class for creating data components.
-"""
+"""Factory pattern for creating data components."""
 
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Type, Tuple, Any
@@ -23,16 +16,6 @@ class Factory(Generic[Products], ABC):
 
     Factories encapsulate the logic for creating one or more coupled
     DataComponent instances from raw inputs.
-
-    Class Attributes
-    ----------------
-    PRODUCT_CLASSES : Type[DataComponent] | Tuple[Type[DataComponent], ...]
-        Class(es) of products this factory creates.
-
-    Attributes
-    ----------
-    PRODUCT_CLASSES : Type[DataComponent] | Tuple[Type[DataComponent], ...]
-        Class(es) of products this factory creates (set on subclasses).
 
     Notes
     -----
@@ -62,6 +45,7 @@ class Factory(Generic[Products], ABC):
     """
 
     PRODUCT_CLASSES: Type[DataComponent] | Tuple[Type[DataComponent], ...]
+    """Class(es) of products this factory creates. Set on subclasses."""
 
     @abstractmethod
     def create(self, *args: Any, **kwargs: Any) -> Products:

@@ -1,13 +1,4 @@
-"""
-Base I/O classes.
-
-Classes
--------
-FileExt
-    File extension type with validation.
-IOHandler
-    Abstract base class for file I/O operations.
-"""
+"""Base I/O classes."""
 
 from abc import ABC
 from pathlib import Path

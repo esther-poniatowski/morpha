@@ -1,11 +1,4 @@
-"""
-Attribute mixin for coordinate values.
-
-Classes
--------
-Attribute
-    Mixin providing validation and labeling for coordinate value types.
-"""
+"""Attribute mixin for coordinate values."""
 
 from typing import (
     Generic,
@@ -33,20 +26,6 @@ class Attribute(Generic[BaseT]):
 
     Provides a common interface for types representing categorical or
     constrained values that can be used in coordinates.
-
-    Class Attributes
-    ----------------
-    OPTIONS : FrozenSet[BaseT]
-        Valid values for this attribute type.
-    LABELS : Mapping[BaseT, str]
-        Human-readable labels for valid values.
-
-    Attributes
-    ----------
-    OPTIONS : FrozenSet[BaseT]
-        Valid values for this attribute type (set on subclasses).
-    LABELS : Mapping[BaseT, str]
-        Human-readable labels for valid values (set on subclasses).
 
     Notes
     -----
@@ -82,7 +61,11 @@ class Attribute(Generic[BaseT]):
     """
 
     OPTIONS: FrozenSet[BaseT]
+    """Valid values for this attribute type. Set on subclasses."""
+
     LABELS: Mapping[BaseT, str]
+    """Human-readable labels for valid values, keyed by the option value.
+    Set on subclasses."""
 
     @classmethod
     def is_valid(cls, value: Any) -> bool:
