@@ -1,10 +1,18 @@
+<a id="i-o-module"></a>
+
 # I/O Module
 
 Saver and Loader implementations for various file formats.
 
+<a id="module-morpha.io.base"></a>
+
+<a id="base-classes"></a>
+
 ## Base Classes
 
 Base I/O classes.
+
+<a id="classes"></a>
 
 ### Classes
 
@@ -13,6 +21,8 @@ FileExt
 
 IOHandler
 : Abstract base class for file I/O operations.
+
+<a id="morpha.io.base.FileExt"></a>
 
 ### *class* morpha.io.base.FileExt(ext)
 
@@ -42,7 +52,11 @@ properly formatted with a leading period.
 >>> FileExt("xyz")  # Raises ValueError
 ```
 
+<a id="morpha.io.base.FileExt.OPTIONS"></a>
+
 #### OPTIONS *= frozenset({'.csv', '.h5', '.hdf5', '.json', '.npy', '.npz', '.pkl', '.yaml', '.yml'})*
+
+<a id="morpha.io.base.FileExt.is_valid"></a>
 
 #### *classmethod* is_valid(ext)
 
@@ -55,6 +69,8 @@ Check if extension is valid.
 * **Return type:**
   [bool](https://docs.python.org/3/library/functions.html#bool)
 
+<a id="morpha.io.base.FileExt.add_period"></a>
+
 #### *static* add_period(ext)
 
 Add leading period if missing.
@@ -65,6 +81,8 @@ Add leading period if missing.
   Extension with a leading period.
 * **Return type:**
   [str](https://docs.python.org/3/library/stdtypes.html#str)
+
+<a id="morpha.io.base.IOHandler"></a>
 
 ### *class* morpha.io.base.IOHandler(path)
 
@@ -81,6 +99,8 @@ Provides common functionality for Saver and Loader classes:
 * **Class Attributes:**
   **EXT** (*frozenset[str]*) – Acceptable file extensions for this handler (including aliases).
   The first element (by sort order) is used as the canonical default.
+
+<a id="morpha.io.base.IOHandler.path"></a>
 
 #### path
 
@@ -113,7 +133,11 @@ Subclass to create specific handlers:
 PosixPath('data/file.pkl')
 ```
 
+<a id="morpha.io.base.IOHandler.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+<a id="morpha.io.base.IOHandler.enforce_ext"></a>
 
 #### *static* enforce_ext(path, ext)
 
@@ -126,6 +150,10 @@ Enforce a specific extension on a path.
   Path with the specified extension.
 * **Return type:**
   Path
+
+<a id="module-morpha.io.savers"></a>
+
+<a id="savers"></a>
 
 ## Savers
 
@@ -145,6 +173,8 @@ SaverNPY
 SaverNPZ
 : Save multiple arrays as compressed NumPy files.
 
+<a id="morpha.io.savers.Saver"></a>
+
 ### *class* morpha.io.savers.Saver(path)
 
 Bases: [`IOHandler`](#morpha.io.base.IOHandler)
@@ -160,6 +190,8 @@ where the saver is configured before data is available.
   [**FileNotFoundError**](https://docs.python.org/3/library/exceptions.html#FileNotFoundError) – If parent directory doesn’t exist.
 * **Class Attributes:**
   **EXT** (*frozenset[str]*) – Acceptable file extensions for this format (including aliases).
+
+<a id="morpha.io.savers.Saver.path"></a>
 
 #### path
 
@@ -185,6 +217,8 @@ Uses Template Method pattern: save() handles common logic,
 >>> saver.save(my_object)  # Saves to output/data.pkl
 ```
 
+<a id="morpha.io.savers.Saver.save"></a>
+
 #### save(data)
 
 Save data to file.
@@ -195,6 +229,8 @@ Save data to file.
   [**Exception**](https://docs.python.org/3/library/exceptions.html#Exception) – Re-raises any exception from \_save with context.
 * **Return type:**
   None
+
+<a id="morpha.io.savers.SaverPKL"></a>
 
 ### *class* morpha.io.savers.SaverPKL(path)
 
@@ -212,7 +248,11 @@ Uses Python’s pickle module for serialization.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.savers.SaverPKL.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.pkl'})*
+
+<a id="morpha.io.savers.SaverNPY"></a>
 
 ### *class* morpha.io.savers.SaverNPY(path)
 
@@ -230,7 +270,11 @@ Uses NumPy’s binary format for efficient storage of arrays.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.savers.SaverNPY.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.npy'})*
+
+<a id="morpha.io.savers.SaverNPZ"></a>
 
 ### *class* morpha.io.savers.SaverNPZ(path)
 
@@ -248,7 +292,11 @@ Accepts either a single array or a dictionary of arrays.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.savers.SaverNPZ.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.npz'})*
+
+<a id="morpha.io.savers.SaverJSON"></a>
 
 ### *class* morpha.io.savers.SaverJSON(path)
 
@@ -266,7 +314,11 @@ Suitable for configuration and simple nested structures.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.savers.SaverJSON.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.json'})*
+
+<a id="morpha.io.savers.SaverYAML"></a>
 
 ### *class* morpha.io.savers.SaverYAML(path)
 
@@ -284,7 +336,11 @@ Human-readable format for configuration and metadata.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.savers.SaverYAML.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.yaml', '.yml'})*
+
+<a id="morpha.io.savers.SaverHDF5"></a>
 
 ### *class* morpha.io.savers.SaverHDF5(path)
 
@@ -295,7 +351,13 @@ Save data to HDF5 files.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.savers.SaverHDF5.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.h5', '.hdf5'})*
+
+<a id="module-morpha.io.loaders"></a>
+
+<a id="loaders"></a>
 
 ## Loaders
 
@@ -315,6 +377,8 @@ LoaderNPY
 LoaderNPZ
 : Load multiple arrays from compressed NumPy files.
 
+<a id="morpha.io.loaders.Loader"></a>
+
 ### *class* morpha.io.loaders.Loader(path)
 
 Bases: [`IOHandler`](#morpha.io.base.IOHandler)
@@ -327,6 +391,8 @@ Abstract base class for loading data from files.
   [**FileNotFoundError**](https://docs.python.org/3/library/exceptions.html#FileNotFoundError) – If file doesn’t exist.
 * **Class Attributes:**
   **EXT** (*frozenset[str]*) – Acceptable file extensions for this format (including aliases).
+
+<a id="morpha.io.loaders.Loader.path"></a>
 
 #### path
 
@@ -352,6 +418,8 @@ Uses Template Method pattern: load() handles common logic,
 >>> obj = loader.load()  # Loads from data/file.pkl
 ```
 
+<a id="morpha.io.loaders.Loader.load"></a>
+
 #### load()
 
 Load data from file.
@@ -362,6 +430,8 @@ Load data from file.
   Any
 * **Raises:**
   [**Exception**](https://docs.python.org/3/library/exceptions.html#Exception) – Re-raises any exception from \_load with context.
+
+<a id="morpha.io.loaders.LoaderPKL"></a>
 
 ### *class* morpha.io.loaders.LoaderPKL(path)
 
@@ -377,7 +447,11 @@ Load Python objects from Pickle files.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.loaders.LoaderPKL.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.pkl'})*
+
+<a id="morpha.io.loaders.LoaderNPY"></a>
 
 ### *class* morpha.io.loaders.LoaderNPY(path)
 
@@ -393,7 +467,11 @@ Load NumPy arrays from .npy files.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.loaders.LoaderNPY.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.npy'})*
+
+<a id="morpha.io.loaders.LoaderNPZ"></a>
 
 ### *class* morpha.io.loaders.LoaderNPZ(path)
 
@@ -411,7 +489,11 @@ Returns an NpzFile object that behaves like a dictionary.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.loaders.LoaderNPZ.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.npz'})*
+
+<a id="morpha.io.loaders.LoaderJSON"></a>
 
 ### *class* morpha.io.loaders.LoaderJSON(path)
 
@@ -427,7 +509,11 @@ Load data from JSON files.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.loaders.LoaderJSON.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.json'})*
+
+<a id="morpha.io.loaders.LoaderYAML"></a>
 
 ### *class* morpha.io.loaders.LoaderYAML(path)
 
@@ -443,7 +529,11 @@ Load data from YAML files.
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
 
+<a id="morpha.io.loaders.LoaderYAML.EXT"></a>
+
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.yaml', '.yml'})*
+
+<a id="morpha.io.loaders.LoaderHDF5"></a>
 
 ### *class* morpha.io.loaders.LoaderHDF5(path)
 
@@ -453,5 +543,7 @@ Load data from HDF5 files.
 
 * **Parameters:**
   **path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
+
+<a id="morpha.io.loaders.LoaderHDF5.EXT"></a>
 
 #### EXT *: [frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)[[str](https://docs.python.org/3/library/stdtypes.html#str)]* *= frozenset({'.h5', '.hdf5'})*

@@ -1,21 +1,33 @@
+<a id="creational-module"></a>
+
 # Creational Module
 
 Factory and Builder patterns for object creation.
 
+<a id="module-morpha.creational.factory"></a>
+
+<a id="factory"></a>
+
 ## Factory
 
 Factory pattern for creating data components.
+
+<a id="classes"></a>
 
 ### Classes
 
 Factory
 : Abstract base class for creating data components.
 
+<a id="morpha.creational.factory.Products"></a>
+
 ### *class* morpha.creational.factory.Products
 
 Type variable for products created by a factory.
 
 alias of TypeVar(‘Products’, bound=`DataComponent | Tuple[DataComponent, ...]`)
+
+<a id="morpha.creational.factory.Factory"></a>
 
 ### *class* morpha.creational.factory.Factory
 
@@ -28,6 +40,8 @@ DataComponent instances from raw inputs.
 
 * **Class Attributes:**
   **PRODUCT_CLASSES** (*Type[DataComponent] | Tuple[Type[DataComponent], …]*) – Class(es) of products this factory creates.
+
+<a id="morpha.creational.factory.Factory.PRODUCT_CLASSES"></a>
 
 #### PRODUCT_CLASSES
 
@@ -67,7 +81,11 @@ Use the factory:
 >>> coord = factory.create(np.arange(100), unit="ms")
 ```
 
+<a id="id0"></a>
+
 #### PRODUCT_CLASSES *: [Type](https://docs.python.org/3/library/typing.html#typing.Type)[[DataComponent](components.md#morpha.components.base.DataComponent)] | [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[Type](https://docs.python.org/3/library/typing.html#typing.Type)[[DataComponent](components.md#morpha.components.base.DataComponent)], ...]*
+
+<a id="morpha.creational.factory.Factory.create"></a>
 
 #### *abstractmethod* create(\*args, \*\*kwargs)
 
@@ -85,6 +103,10 @@ Create one or more data components.
 Subclasses must implement this method with appropriate
 parameters for their specific product types.
 
+<a id="module-morpha.creational.builder"></a>
+
+<a id="builder"></a>
+
 ## Builder
 
 Builder pattern for constructing data structures.
@@ -94,11 +116,15 @@ Builder pattern for constructing data structures.
 Builder
 : Abstract base class for step-by-step data structure construction.
 
+<a id="morpha.creational.builder.Product"></a>
+
 ### *class* morpha.creational.builder.Product
 
 Type variable for the data structure produced by a builder.
 
 alias of TypeVar(‘Product’, bound=[`DataStructure`](structures.md#morpha.structures.base.DataStructure)[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)])
+
+<a id="morpha.creational.builder.Builder"></a>
 
 ### *class* morpha.creational.builder.Builder
 
@@ -113,6 +139,8 @@ data structure class itself.
 * **Class Attributes:**
   * **PRODUCT_CLASS** (*Type[Product]*) – Class of the data structure to build.
   * **TMP_DATA** (*Tuple[str, …]*) – Names of temporary data attributes used during building.
+
+<a id="morpha.creational.builder.Builder.product"></a>
 
 #### product
 
@@ -168,9 +196,15 @@ Use the builder:
 >>> ts = builder.build(raw_data, timestamps)
 ```
 
+<a id="morpha.creational.builder.Builder.PRODUCT_CLASS"></a>
+
 #### PRODUCT_CLASS *: [Type](https://docs.python.org/3/library/typing.html#typing.Type)[[Product](#morpha.creational.builder.Product)]*
 
+<a id="morpha.creational.builder.Builder.TMP_DATA"></a>
+
 #### TMP_DATA *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[str](https://docs.python.org/3/library/stdtypes.html#str), ...]*
+
+<a id="morpha.creational.builder.Builder.__init__"></a>
 
 #### \_\_init_\_()
 
@@ -179,12 +213,16 @@ Initialize the builder with no product.
 * **Return type:**
   None
 
+<a id="morpha.creational.builder.Builder.reset"></a>
+
 #### reset()
 
 Reset builder state for reuse.
 
 * **Return type:**
   None
+
+<a id="morpha.creational.builder.Builder.get_product"></a>
 
 #### get_product()
 
@@ -196,6 +234,8 @@ Return the built product and reset the builder.
   [Product](#morpha.creational.builder.Product)
 * **Raises:**
   [**AssertionError**](https://docs.python.org/3/library/exceptions.html#AssertionError) – If product is None (build not complete).
+
+<a id="morpha.creational.builder.Builder.build"></a>
 
 #### *abstractmethod* build(\*args, \*\*kwargs)
 

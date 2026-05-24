@@ -1,15 +1,25 @@
+<a id="components-module"></a>
+
 # Components Module
 
 Core data components with dimension annotations.
+
+<a id="module-morpha.components.base"></a>
+
+<a id="datacomponent"></a>
 
 ## DataComponent
 
 Base data component class.
 
+<a id="classes"></a>
+
 ### Classes
 
 DataComponent
 : NumPy ndarray subclass with dimension annotations and metadata propagation.
+
+<a id="morpha.components.base.DataComponent"></a>
 
 ### *class* morpha.components.base.DataComponent(values, dims=None, \*\*metadata)
 
@@ -37,6 +47,8 @@ Subclass of numpy.ndarray that adds:
     Define in subclasses.
 * **Return type:**
   [*Self*](https://docs.python.org/3/library/typing.html#typing.Self)
+
+<a id="morpha.components.base.DataComponent.dims"></a>
 
 #### dims
 
@@ -74,15 +86,27 @@ Get dimension information:
 10
 ```
 
+<a id="morpha.components.base.DataComponent.DIMENSIONS_SPEC"></a>
+
 #### DIMENSIONS_SPEC *: [DimensionsSpec](#morpha.components.dimensions.DimensionsSpec)*
+
+<a id="id0"></a>
 
 #### dims *: [Dimensions](#morpha.components.dimensions.Dimensions)*
 
+<a id="morpha.components.base.DataComponent.METADATA"></a>
+
 #### METADATA *: [Mapping](https://docs.python.org/3/library/typing.html#typing.Mapping)[[str](https://docs.python.org/3/library/stdtypes.html#str), [MetaDataField](#morpha.components.metadata.MetaDataField)]*
+
+<a id="morpha.components.base.DataComponent.DTYPE"></a>
 
 #### DTYPE *: [dtype](https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype)[[Any](https://docs.python.org/3/library/typing.html#typing.Any)]*
 
+<a id="morpha.components.base.DataComponent.SENTINEL"></a>
+
 #### SENTINEL *: [int](https://docs.python.org/3/library/functions.html#int) | [float](https://docs.python.org/3/library/functions.html#float) | [str](https://docs.python.org/3/library/stdtypes.html#str)*
+
+<a id="morpha.components.base.DataComponent.validate"></a>
 
 #### *classmethod* validate(values)
 
@@ -94,6 +118,8 @@ Override in subclasses for specific validation.
   **values** (*ArrayLike*) – Input values to validate.
 * **Return type:**
   None
+
+<a id="morpha.components.base.DataComponent.propagate_dimensions"></a>
 
 #### *classmethod* propagate_dimensions(parent, child)
 
@@ -107,6 +133,8 @@ If dimensionality is preserved, transfers dims. Otherwise resets to defaults.
 * **Return type:**
   None
 
+<a id="morpha.components.base.DataComponent.propagate_metadata"></a>
+
 #### *classmethod* propagate_metadata(parent, child)
 
 Propagate metadata from parent to child array.
@@ -119,6 +147,8 @@ Transfers metadata attributes defined in METADATA from parent.
 * **Return type:**
   None
 
+<a id="morpha.components.base.DataComponent.wrap"></a>
+
 #### wrap(obj)
 
 Cast a numpy array to this DataComponent type.
@@ -129,6 +159,8 @@ Cast a numpy array to this DataComponent type.
   Array cast to current class.
 * **Return type:**
   Self
+
+<a id="morpha.components.base.DataComponent.from_shape"></a>
 
 #### *classmethod* from_shape(shape, dims=None, \*\*metadata)
 
@@ -143,6 +175,8 @@ Create an empty instance filled with the sentinel value.
 * **Return type:**
   Self
 
+<a id="morpha.components.base.DataComponent.get_dim"></a>
+
 #### get_dim(axis)
 
 Get dimension name by axis index.
@@ -153,6 +187,8 @@ Get dimension name by axis index.
   Dimension name.
 * **Return type:**
   [str](https://docs.python.org/3/library/stdtypes.html#str)
+
+<a id="morpha.components.base.DataComponent.get_axis"></a>
 
 #### get_axis(dim)
 
@@ -165,6 +201,8 @@ Get axis index by dimension name.
 * **Return type:**
   [int](https://docs.python.org/3/library/functions.html#int)
 
+<a id="morpha.components.base.DataComponent.get_size"></a>
+
 #### get_size(dim)
 
 Get the length of a dimension.
@@ -176,6 +214,8 @@ Get the length of a dimension.
 * **Return type:**
   [int](https://docs.python.org/3/library/functions.html#int)
 
+<a id="morpha.components.base.DataComponent.get_missing"></a>
+
 #### get_missing()
 
 Get boolean mask for missing values (equal to SENTINEL).
@@ -185,7 +225,9 @@ Get boolean mask for missing values (equal to SENTINEL).
 * **Return type:**
   np.ndarray
 
-#### transpose(axes: [SupportsIndex](https://docs.python.org/3/library/typing.html#typing.SupportsIndex) | [Sequence](https://docs.python.org/3/library/typing.html#typing.Sequence)[[SupportsIndex](https://docs.python.org/3/library/typing.html#typing.SupportsIndex)] | [None](https://docs.python.org/3/library/constants.html#None),)  → [Self](https://docs.python.org/3/library/typing.html#typing.Self)
+<a id="morpha.components.base.DataComponent.transpose"></a>
+
+#### transpose(axes: [SupportsIndex](https://docs.python.org/3/library/typing.html#typing.SupportsIndex) | [Sequence](https://docs.python.org/3/library/typing.html#typing.Sequence)[[SupportsIndex](https://docs.python.org/3/library/typing.html#typing.SupportsIndex)] | [None](https://docs.python.org/3/library/constants.html#None), /) → [Self](https://docs.python.org/3/library/typing.html#typing.Self)
 
 #### transpose(\*axes: [SupportsIndex](https://docs.python.org/3/library/typing.html#typing.SupportsIndex)) → [Self](https://docs.python.org/3/library/typing.html#typing.Self)
 
@@ -198,6 +240,8 @@ Transpose array and update dimension names.
 * **Return type:**
   Self
 
+<a id="morpha.components.base.DataComponent.T"></a>
+
 #### *property* T *: [Self](https://docs.python.org/3/library/typing.html#typing.Self)*
 
 Return transposed array with updated dims.
@@ -206,6 +250,8 @@ Return transposed array with updated dims.
   Transposed view.
 * **Return type:**
   Self
+
+<a id="morpha.components.base.DataComponent.swapaxes"></a>
 
 #### swapaxes(axis1, axis2)
 
@@ -219,6 +265,8 @@ Swap two axes and update dimension names.
 * **Return type:**
   Self
 
+<a id="morpha.components.base.DataComponent.moveaxis"></a>
+
 #### moveaxis(source, destination)
 
 Move an axis to a new position and update dimension names.
@@ -230,6 +278,8 @@ Move an axis to a new position and update dimension names.
   Array with moved axis and updated dims.
 * **Return type:**
   Self
+
+<a id="morpha.components.base.DataComponent.rollaxis"></a>
 
 #### rollaxis(axis, start=0)
 
@@ -245,6 +295,8 @@ Not implemented — requires manual dimension update.
 * **Return type:**
   [*Self*](https://docs.python.org/3/library/typing.html#typing.Self)
 
+<a id="morpha.components.base.DataComponent.flip"></a>
+
 #### flip(axis)
 
 Reverse elements along the given axis.
@@ -258,6 +310,10 @@ Not implemented — requires manual dimension update.
 * **Return type:**
   [*Self*](https://docs.python.org/3/library/typing.html#typing.Self)
 
+<a id="module-morpha.components.dimensions"></a>
+
+<a id="dimensions"></a>
+
 ## Dimensions
 
 Dimension management for data components.
@@ -269,6 +325,8 @@ Dimensions
 
 DimensionsSpec
 : Specification for validating dimension names in data structures.
+
+<a id="morpha.components.dimensions.Dimensions"></a>
 
 ### *class* morpha.components.dimensions.Dimensions(\*args)
 
@@ -283,6 +341,8 @@ used by wrapper objects via delegation.
   **\*args** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – Names of the dimensions.
 * **Class Attributes:**
   **DEFAULT** (*str*) – Default dimension name for unlabeled axes.
+
+<a id="morpha.components.dimensions.Dimensions.data"></a>
 
 #### data
 
@@ -323,7 +383,11 @@ Check subset relationship:
 True
 ```
 
+<a id="morpha.components.dimensions.Dimensions.DEFAULT"></a>
+
 #### DEFAULT *: [str](https://docs.python.org/3/library/stdtypes.html#str)* *= ''*
+
+<a id="morpha.components.dimensions.Dimensions.default"></a>
 
 #### *classmethod* default(ndim)
 
@@ -336,6 +400,8 @@ Create default dimensions with empty names.
 * **Return type:**
   Self
 
+<a id="morpha.components.dimensions.Dimensions.ndim"></a>
+
 #### *property* ndim *: [int](https://docs.python.org/3/library/functions.html#int)*
 
 Return the number of dimensions.
@@ -344,6 +410,8 @@ Return the number of dimensions.
   Number of dimensions.
 * **Return type:**
   [int](https://docs.python.org/3/library/functions.html#int)
+
+<a id="morpha.components.dimensions.Dimensions.get_dim"></a>
 
 #### get_dim(axis)
 
@@ -358,6 +426,8 @@ Get dimension name by axis index.
 * **Raises:**
   [**IndexError**](https://docs.python.org/3/library/exceptions.html#IndexError) – If axis is out of bounds.
 
+<a id="morpha.components.dimensions.Dimensions.get_axis"></a>
+
 #### get_axis(name)
 
 Get axis index by dimension name.
@@ -371,6 +441,8 @@ Get axis index by dimension name.
 * **Raises:**
   [**ValueError**](https://docs.python.org/3/library/exceptions.html#ValueError) – If the dimension name is not found.
 
+<a id="morpha.components.dimensions.Dimensions.is_subset"></a>
+
 #### is_subset(other)
 
 Check if dimensions are a subset of another.
@@ -381,6 +453,8 @@ Check if dimensions are a subset of another.
   True if all names are present in *other*.
 * **Return type:**
   [bool](https://docs.python.org/3/library/functions.html#bool)
+
+<a id="morpha.components.dimensions.Dimensions.is_ordered_as"></a>
 
 #### is_ordered_as(other)
 
@@ -395,6 +469,8 @@ Only considers dimensions present in both objects.
 * **Return type:**
   [bool](https://docs.python.org/3/library/functions.html#bool)
 
+<a id="morpha.components.dimensions.Dimensions.intersection"></a>
+
 #### *classmethod* intersection(\*dims)
 
 Get common dimensions between multiple Dimensions objects.
@@ -405,6 +481,8 @@ Get common dimensions between multiple Dimensions objects.
   Dimensions present in all inputs.
 * **Return type:**
   [Dimensions](#morpha.components.dimensions.Dimensions)
+
+<a id="morpha.components.dimensions.Dimensions.add"></a>
 
 #### add(name='', axis=-1)
 
@@ -419,6 +497,8 @@ Add a dimension at a specific position.
 * **Return type:**
   None
 
+<a id="morpha.components.dimensions.Dimensions.transpose"></a>
+
 #### transpose(axes=None)
 
 Reorder dimensions.
@@ -429,6 +509,8 @@ Reorder dimensions.
   Reordered dimensions.
 * **Return type:**
   Self
+
+<a id="morpha.components.dimensions.Dimensions.swap"></a>
 
 #### swap(axis1, axis2)
 
@@ -442,6 +524,8 @@ Swap two dimensions.
 * **Return type:**
   Self
 
+<a id="morpha.components.dimensions.Dimensions.move"></a>
+
 #### move(source, destination)
 
 Move dimensions to new positions.
@@ -454,6 +538,8 @@ Move dimensions to new positions.
 * **Return type:**
   Self
 
+<a id="morpha.components.dimensions.DimensionsSpec"></a>
+
 ### *class* morpha.components.dimensions.DimensionsSpec(\*\*kwargs)
 
 Bases: [`object`](https://docs.python.org/3/library/functions.html#object)
@@ -464,6 +550,8 @@ Defines which dimensions are required vs optional, and their expected order.
 
 * **Parameters:**
   **\*\*kwargs** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – Dimension names as keys, with True for required and False for optional.
+
+<a id="morpha.components.dimensions.DimensionsSpec.spec"></a>
 
 #### spec
 
@@ -482,6 +570,8 @@ Dimensions['trials']
 Dimensions['units', 'time']
 ```
 
+<a id="id1"></a>
+
 #### *property* spec
 
 Return read-only ordered mapping of dimension names to required status.
@@ -490,6 +580,8 @@ Return read-only ordered mapping of dimension names to required status.
   Immutable view of the specification.
 * **Return type:**
   MappingProxyType
+
+<a id="morpha.components.dimensions.DimensionsSpec.required"></a>
 
 #### required()
 
@@ -500,6 +592,8 @@ Get required dimensions.
 * **Return type:**
   [Dimensions](#morpha.components.dimensions.Dimensions)
 
+<a id="morpha.components.dimensions.DimensionsSpec.optional"></a>
+
 #### optional()
 
 Get optional dimensions.
@@ -508,6 +602,8 @@ Get optional dimensions.
   Dimensions marked as optional.
 * **Return type:**
   [Dimensions](#morpha.components.dimensions.Dimensions)
+
+<a id="morpha.components.dimensions.DimensionsSpec.validate"></a>
 
 #### validate(dims)
 
@@ -521,6 +617,10 @@ Validate dimensions against the specification.
 * **Return type:**
   None
 
+<a id="module-morpha.components.metadata"></a>
+
+<a id="metadata"></a>
+
 ## Metadata
 
 Metadata field specification for data components.
@@ -529,6 +629,8 @@ Metadata field specification for data components.
 
 MetaDataField
 : Specification for a metadata attribute on a DataComponent.
+
+<a id="morpha.components.metadata.MetaDataField"></a>
 
 ### *class* morpha.components.metadata.MetaDataField(field_type, default_value)
 
@@ -543,12 +645,16 @@ that can be attached to DataComponent subclasses.
   * **field_type** ([*Type*](https://docs.python.org/3/library/typing.html#typing.Type) *[*[*Any*](https://docs.python.org/3/library/typing.html#typing.Any) *]*)
   * **default_value** ([*Any*](https://docs.python.org/3/library/typing.html#typing.Any))
 
+<a id="morpha.components.metadata.MetaDataField.field_type"></a>
+
 #### field_type
 
 Expected type of the metadata field.
 
 * **Type:**
   Type[Any]
+
+<a id="morpha.components.metadata.MetaDataField.default_value"></a>
 
 #### default_value
 
@@ -569,9 +675,17 @@ Define metadata fields for a custom DataComponent:
 ...     }
 ```
 
+<a id="id2"></a>
+
 #### field_type *: [Type](https://docs.python.org/3/library/typing.html#typing.Type)[[Any](https://docs.python.org/3/library/typing.html#typing.Any)]*
 
+<a id="id3"></a>
+
 #### default_value *: [Any](https://docs.python.org/3/library/typing.html#typing.Any)*
+
+<a id="module-morpha.components.specs"></a>
+
+<a id="specs"></a>
 
 ## Specs
 
@@ -581,6 +695,8 @@ Component specification for data structures.
 
 ComponentSpec
 : Specification of allowed data components in a data structure.
+
+<a id="morpha.components.specs.ComponentSpec"></a>
 
 ### *class* morpha.components.specs.ComponentSpec(\*\*kwargs)
 
@@ -593,6 +709,8 @@ attribute names and types.
 
 * **Parameters:**
   **\*\*kwargs** (*Type* *[*[*DataComponent*](#morpha.components.base.DataComponent) *]*) – Component names as keys and their expected types as values.
+
+<a id="morpha.components.specs.ComponentSpec.spec"></a>
 
 #### spec
 
@@ -620,6 +738,8 @@ Validate a component:
 >>> spec.validate("data", time_coord)  # Raises TypeError
 ```
 
+<a id="id4"></a>
+
 #### *property* spec
 
 Return read-only mapping of attribute names to expected component types.
@@ -628,6 +748,8 @@ Return read-only mapping of attribute names to expected component types.
   Immutable view of the specification.
 * **Return type:**
   MappingProxyType
+
+<a id="morpha.components.specs.ComponentSpec.validate"></a>
 
 #### validate(name, component)
 
@@ -642,6 +764,8 @@ Validate a component against the specification.
 * **Return type:**
   None
 
+<a id="morpha.components.specs.ComponentSpec.keys"></a>
+
 #### keys()
 
 Return component names.
@@ -651,6 +775,8 @@ Return component names.
 * **Return type:**
   KeysView
 
+<a id="morpha.components.specs.ComponentSpec.values"></a>
+
 #### values()
 
 Return expected component types.
@@ -659,6 +785,8 @@ Return expected component types.
   View of component types.
 * **Return type:**
   ValuesView
+
+<a id="morpha.components.specs.ComponentSpec.items"></a>
 
 #### items()
 
